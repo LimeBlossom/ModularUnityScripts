@@ -4,42 +4,43 @@ using UnityEngine;
 
 public class MoveToLocation : MonoBehaviour, IActivatable
 {
+    [SerializeField] private GameObject toMove;
+
     public Vector3 positionToMoveTo;
     public float timeToMove;
-    [SerializeField] private bool onStart = false;
     [SerializeField] private bool localPosition = false;
+
+    private void Start()
+    {
+        if(toMove == null)
+        {
+            toMove = gameObject;
+        }
+    }
 
     public void Activate()
     {
         StartCoroutine(LerpPosition(positionToMoveTo, timeToMove));
     }
 
-    private void Start()
-    {
-        if(onStart)
-        {
-            StartCoroutine(LerpPosition(positionToMoveTo, timeToMove));
-        }
-    }
-
     IEnumerator LerpPosition(Vector3 targetPosition, float duration)
     {
         float time = 0;
-        Vector3 startPosition = transform.position;
+        Vector3 startPosition = toMove.transform.position;
         if(localPosition)
         {
-            startPosition = transform.localPosition;
+            startPosition = toMove.transform.localPosition;
         }
 
         while (time < duration)
         {
             if(localPosition)
             {
-                transform.localPosition = Vector3.Lerp(startPosition, targetPosition, time / duration);
+                toMove.transform.localPosition = Vector3.Lerp(startPosition, targetPosition, time / duration);
             }
             else
             {
-                transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
+                toMove.transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
             }
             
             time += Time.deltaTime;
@@ -47,11 +48,11 @@ public class MoveToLocation : MonoBehaviour, IActivatable
         }
         if(localPosition)
         {
-            transform.localPosition = targetPosition;
+            toMove.transform.localPosition = targetPosition;
         }
         else
         {
-            transform.position = targetPosition;
+            toMove.transform.position = targetPosition;
         }
     }
 }

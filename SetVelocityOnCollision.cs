@@ -12,7 +12,7 @@ public class SetVelocityOnCollision : MonoBehaviour
 
     [SerializeField] private bool debug;
 
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D rb;
 
     private void Start()
     {
@@ -26,7 +26,7 @@ public class SetVelocityOnCollision : MonoBehaviour
         }
         else
         {
-            rigidbody = GetComponent<Rigidbody2D>();
+            rb = GetComponent<Rigidbody2D>();
         }
     }
 
@@ -60,15 +60,15 @@ public class SetVelocityOnCollision : MonoBehaviour
     {
         if(relativeToOwnFacing)
         {
-            rigidbody.velocity = new Vector2(value.x * (transform.right.x * transform.lossyScale.x > 0 ? -1 : 1), value.y);
+            rb.velocity = new Vector2(value.x * (transform.right.x * transform.lossyScale.x > 0 ? -1 : 1), value.y);
         }
         else if(relativeToCollidedFacing)
         {
-            rigidbody.velocity = new Vector2(value.x * (collided.transform.right.x * collided.transform.lossyScale.x > 0 ? -1 : 1), value.y);
+            rb.velocity = new Vector2(value.x * (collided.transform.right.x * collided.transform.lossyScale.x > 0 ? -1 : 1), value.y);
         }
         else
         {
-            rigidbody.velocity = value;
+            rb.velocity = value;
         }
     }
 

@@ -19,7 +19,7 @@ public class VelocityJumpController : MonoBehaviour
 
     [SerializeField] private bool debug;
 
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D rb;
 
     private bool isGrounded = false;
     private bool moveRight;
@@ -34,7 +34,7 @@ public class VelocityJumpController : MonoBehaviour
         {
             Debug.LogError(gameObject.name + " sets velocity but does not have a rigidbody!");
         }
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -80,23 +80,23 @@ public class VelocityJumpController : MonoBehaviour
             {
                 jumpReleased = false;
 
-                rigidbody.gravityScale = airGravity;
+                rb.gravityScale = airGravity;
 
                 GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpSpeed);
 
                 if (moveLeft)
                 {
-                    rigidbody.velocity = new Vector2(-leftSpeed * 50f * Time.fixedDeltaTime, rigidbody.velocity.y);
+                    rb.velocity = new Vector2(-leftSpeed * 50f * Time.fixedDeltaTime, rb.velocity.y);
                 }
                 if (moveRight)
                 {
-                    rigidbody.velocity = new Vector2(rightSpeed * 50f * Time.fixedDeltaTime, rigidbody.velocity.y);
+                    rb.velocity = new Vector2(rightSpeed * 50f * Time.fixedDeltaTime, rb.velocity.y);
                 }
             }
         }
         else
         {
-            rigidbody.gravityScale = landGravity;
+            rb.gravityScale = landGravity;
         }
     }
 

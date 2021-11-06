@@ -20,13 +20,13 @@ public class SlideMoveController : MonoBehaviour
 
     public bool debug = false;
 
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D rb;
 
     private bool canMove = true;
 
     private void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -77,12 +77,12 @@ public class SlideMoveController : MonoBehaviour
                                     }
                                 }
                             }
-                            rigidbody.velocity = new Vector3(-leftSpeed, 0);
+                            rb.velocity = new Vector3(-leftSpeed, 0);
     }
                     }
                     else
                     {
-                        rigidbody.velocity = new Vector3(-leftSpeed, 0);
+                        rb.velocity = new Vector3(-leftSpeed, 0);
                     }
                 }
             }
@@ -90,7 +90,7 @@ public class SlideMoveController : MonoBehaviour
             {
                 if (Input.GetKey(leftKey[i]))
                 {
-                    rigidbody.velocity = new Vector3(-leftSpeed, 0);
+                    rb.velocity = new Vector3(-leftSpeed, 0);
                 }
             }
         }
@@ -118,12 +118,12 @@ public class SlideMoveController : MonoBehaviour
                                     }
                                 }
                             }
-                            rigidbody.velocity = new Vector3(rightSpeed, 0);
+                            rb.velocity = new Vector3(rightSpeed, 0);
                         }
                     }
                     else
                     {
-                        rigidbody.velocity = new Vector3(rightSpeed, 0);
+                        rb.velocity = new Vector3(rightSpeed, 0);
                     }
                 }
             }
@@ -131,7 +131,7 @@ public class SlideMoveController : MonoBehaviour
             {
                 if (Input.GetKey(rightKey[i]))
                 {
-                    rigidbody.velocity = new Vector3(rightSpeed, 0);
+                    rb.velocity = new Vector3(rightSpeed, 0);
                 }
             }
         }
@@ -159,12 +159,12 @@ public class SlideMoveController : MonoBehaviour
                                     }
                                 }
                             }
-                            rigidbody.velocity = new Vector3(0, upSpeed);
+                            rb.velocity = new Vector3(0, upSpeed);
                         }
                     }
                     else
                     {
-                        rigidbody.velocity = new Vector3(0, upSpeed);
+                        rb.velocity = new Vector3(0, upSpeed);
                     }
                 }
             }
@@ -172,7 +172,7 @@ public class SlideMoveController : MonoBehaviour
             {
                 if (Input.GetKey(upKey[i]))
                 {
-                    rigidbody.velocity = new Vector3(0, upSpeed);
+                    rb.velocity = new Vector3(0, upSpeed);
                 }
             }
         }
@@ -200,11 +200,11 @@ public class SlideMoveController : MonoBehaviour
                                     }
                                 }
                             }
-                            rigidbody.velocity = new Vector3(0, -downSpeed);
+                            rb.velocity = new Vector3(0, -downSpeed);
                         }
                         else
                         {
-                            rigidbody.velocity = new Vector3(0, -downSpeed);
+                            rb.velocity = new Vector3(0, -downSpeed);
                         }
                     }
                 }
@@ -213,7 +213,7 @@ public class SlideMoveController : MonoBehaviour
             {
                 if (Input.GetKey(downKey[i]))
                 {
-                    rigidbody.velocity = new Vector3(0, -downSpeed);
+                    rb.velocity = new Vector3(0, -downSpeed);
                 }
             }
         }

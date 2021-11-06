@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class DieAction : MonoBehaviour, IActivatable
 {
+    [SerializeField] private GameObject toDie;
+
     public void Activate()
     {
-        Destroy(gameObject);
+        if (toDie != null)
+        {
+            Destroy(toDie);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Wobble : MonoBehaviour
 {
+    [SerializeField] private GameObject toWobble;
+
     public bool wobbleSize;
     public bool wobblePosition;
     public bool wobbleRotation;
@@ -15,6 +17,24 @@ public class Wobble : MonoBehaviour
 
     private float timeAlive = 0;
 
+    private Vector3 originalPos;
+
+    private void Start()
+    {
+        if(toWobble == null)
+        {
+            toWobble = gameObject;
+        }
+
+        originalPos = toWobble.transform.position + wobbleOffset;
+    }
+
+    private void OnEnable()
+    {
+        originalPos = toWobble.transform.position + wobbleOffset;
+    }
+
+
     void Update()
     {
         timeAlive += Time.deltaTime;
@@ -22,23 +42,23 @@ public class Wobble : MonoBehaviour
         float curWobble = Mathf.Sin(timeAlive * wobbleFrequency);
         if (basedOnXPos)
         {
-            curWobble = Mathf.Sin(wobbleFrequency * (transform.position.x + wobbleOffset.x));
+            curWobble = Mathf.Sin(wobbleFrequency * (toWobble.transform.position.x + wobbleOffset.x));
         }
         
         if(wobblePosition)
         {
-            Vector3 wobbleVector = new Vector3(wobbleScale.x * curWobble, wobbleScale.y * curWobble, wobbleScale.z * curWobble);
-            transform.position = transform.position + wobbleVector * Time.deltaTime;
+            Vector3 wobbleVector = new Vector3(wobbleScale.x * curWobble + wobbleOffset.x, wobbleScale.y * curWobble + wobbleOffset.y, wobbleScale.z * curWobble + wobbleOffset.z);
+            toWobble.transform.position = originalPos + wobbleVector;
         }
         if(wobbleSize)
         {
             Vector3 temp = new Vector3(wobbleScale.x * curWobble + wobbleOffset.x, wobbleScale.y * curWobble + wobbleOffset.y, wobbleScale.z * curWobble + wobbleOffset.z);
-            transform.localScale = temp;
+            toWobble.transform.localScale = temp;
         }
         if(wobbleRotation)
         {
             Vector3 temp = new Vector3(wobbleScale.x * curWobble + wobbleOffset.x, wobbleScale.y * curWobble + wobbleOffset.y, wobbleScale.z * curWobble + wobbleOffset.z);
-            transform.localRotation = Quaternion.Euler(temp);
+            toWobble.transform.localRotation = Quaternion.Euler(temp);
         }
     }
 }

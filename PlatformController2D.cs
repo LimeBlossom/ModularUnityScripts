@@ -49,7 +49,7 @@ public class PlatformController2D : MonoBehaviour
 
     private bool isGrounded = false;
     private bool lastFrameInAir = false;
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D rb;
     private float lastSpriteFlip;
     private int spriteIndex = 0;
 
@@ -57,15 +57,15 @@ public class PlatformController2D : MonoBehaviour
     private bool sprint;
     private bool moveRight;
     private bool moveLeft;
-    private bool moveUp;
-    private bool moveDown;
+    //private bool moveUp;
+    //private bool moveDown;
 
     private bool jumpReleased = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         if (!GetComponent<Rigidbody2D>())
         {
             Debug.LogError(gameObject.name + " sets velocity but does not have a rigidbody!");
@@ -118,14 +118,14 @@ public class PlatformController2D : MonoBehaviour
         {
             if (Input.GetKey(key))
             {
-                moveUp = true;
+                //moveUp = true;
             }
         }
         foreach (string key in downKey)
         {
             if (Input.GetKey(key))
             {
-                moveDown = true;
+                //moveDown = true;
             }
         }
 
@@ -201,7 +201,7 @@ public class PlatformController2D : MonoBehaviour
 
                 jumpReleased = false;
 
-                rigidbody.gravityScale = airGravity;
+                rb.gravityScale = airGravity;
 
                 GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpSpeed);
 
@@ -212,7 +212,7 @@ public class PlatformController2D : MonoBehaviour
                     {
                         tempSpeed *= sprintMultiplier;
                     }
-                    rigidbody.velocity = new Vector2(tempSpeed * Time.fixedDeltaTime, rigidbody.velocity.y);
+                    rb.velocity = new Vector2(tempSpeed * Time.fixedDeltaTime, rb.velocity.y);
                 }
                 if (moveRight)
                 {
@@ -221,7 +221,7 @@ public class PlatformController2D : MonoBehaviour
                     {
                         tempSpeed *= sprintMultiplier;
                     }
-                    rigidbody.velocity = new Vector2(tempSpeed * Time.fixedDeltaTime, rigidbody.velocity.y);
+                    rb.velocity = new Vector2(tempSpeed * Time.fixedDeltaTime, rb.velocity.y);
                 }
 
                 foreach(GameObject toSpawn in spawnOnJump)
@@ -253,7 +253,7 @@ public class PlatformController2D : MonoBehaviour
         }
         else
         {
-            rigidbody.gravityScale = landGravity;
+            rb.gravityScale = landGravity;
             if(isGrounded && lastFrameInAir && walkRightSprites.Length > 0)
             {
                 spriteIndex = 0;
@@ -285,11 +285,11 @@ public class PlatformController2D : MonoBehaviour
             }
             else
             {
-                if (rigidbody != null)
+                if (rb != null)
                 {
-                    if(rigidbody.velocity.x > -leftSpeed)
+                    if(rb.velocity.x > -leftSpeed)
                     {
-                        rigidbody.AddForce(new Vector2(-leftSpeed * 2 * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
+                        rb.AddForce(new Vector2(-leftSpeed * 2 * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
                     }
                 }
             }
@@ -318,11 +318,11 @@ public class PlatformController2D : MonoBehaviour
             }
             else
             {
-                if (rigidbody != null)
+                if (rb != null)
                 {
-                    if(rigidbody.velocity.x < rightSpeed)
+                    if(rb.velocity.x < rightSpeed)
                     {
-                        rigidbody.AddForce(new Vector2(rightSpeed * 2 * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
+                        rb.AddForce(new Vector2(rightSpeed * 2 * Time.fixedDeltaTime, 0), ForceMode2D.Impulse);
                     }
                 }
             }
@@ -332,8 +332,8 @@ public class PlatformController2D : MonoBehaviour
         sprint = false;
         moveLeft = false;
         moveRight = false;
-        moveUp = false;
-        moveDown = false;
+        //moveUp = false;
+        //moveDown = false;
     }
 
     bool IsGrounded()

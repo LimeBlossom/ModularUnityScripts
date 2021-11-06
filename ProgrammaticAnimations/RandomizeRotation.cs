@@ -24,7 +24,7 @@ public class RandomizeRotation : MonoBehaviour
             zAngle = (int)zAngle;
         }
 
-        transform.eulerAngles = new Vector3(
+        transform.eulerAngles += new Vector3(
             xAngle * multiplier,
             yAngle * multiplier,
             zAngle * multiplier);

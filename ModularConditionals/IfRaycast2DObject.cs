@@ -10,6 +10,7 @@ public class IfRaycast2DObject : MonoBehaviour, IActivatable
 
     [SerializeField] private Transform origin;
     [SerializeField] private GameObject[] toIgnore;
+    [SerializeField] private string[] ignoreTags;
 
     [SerializeField] private List<GameObject> targets;
     [SerializeField] private string[] targetTags;
@@ -108,7 +109,11 @@ public class IfRaycast2DObject : MonoBehaviour, IActivatable
                             skip = true;
                         }
                     }
-                    if(!skip)
+                    if(ignoreTags.Contains(hit.collider.tag))
+                    {
+                        skip = true;
+                    }
+                    if (!skip)
                     {
                         if (hit.collider.gameObject == target)
                         {
@@ -136,6 +141,7 @@ public class IfRaycast2DObject : MonoBehaviour, IActivatable
 
     private void ActivateActions(GameObject nearestObject)
     {
+        nearestRaycastedTarget = nearestObject;
         events.Invoke();
         // Call settables before actions
         if (gameObjectSettables != null && gameObjectSettables.Length > 0)

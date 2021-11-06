@@ -6,15 +6,22 @@ using UnityEngine.Events;
 public class OnTimer : MonoBehaviour, IActivatable
 {
     [SerializeField] private bool startTimerOnAwake;
+    [SerializeField] private bool onlyRunOnce = false;
     [SerializeField] private bool alwaysRandomizerTimer;
     [SerializeField] private MinMaxFloat activateAfterTime;
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
 
     private float timer;
+    private bool ranOnce = false;
 
     public void Activate()
     {
+        if(onlyRunOnce && ranOnce)
+        {
+            return;
+        }
+        ranOnce = true;
         if(alwaysRandomizerTimer)
         {
             timer = Random.Range(activateAfterTime.min, activateAfterTime.max);

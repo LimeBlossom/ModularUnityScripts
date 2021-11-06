@@ -55,12 +55,12 @@ public class SimpleMoveController2D : MonoBehaviour
                                     }
                                 }
                             }
-                            transform.Translate(new Vector3(-leftSpeed, 0));
+                            transform.position += new Vector3(-leftSpeed, 0);
                         }
                     }
                     else
                     {
-                        transform.Translate(new Vector3(-leftSpeed, 0));
+                        transform.position += new Vector3(-leftSpeed, 0);
                     }
                 }
             }
@@ -68,7 +68,7 @@ public class SimpleMoveController2D : MonoBehaviour
             {
                 if (Input.GetKey(leftKey[i]))
                 {
-                    transform.Translate(new Vector3(-leftSpeed * Time.deltaTime, 0));
+                    transform.position += (new Vector3(-leftSpeed * Time.deltaTime, 0));
                 }
             }
         }
@@ -96,7 +96,7 @@ public class SimpleMoveController2D : MonoBehaviour
                                     }
                                 }
                             }
-                            transform.Translate(new Vector3(rightSpeed, 0));
+                            transform.position = transform.position + new Vector3(rightSpeed, 0);
                         }
                     }
                     else
@@ -138,7 +138,7 @@ public class SimpleMoveController2D : MonoBehaviour
                                     }
                                 }
                             }
-                            transform.Translate(new Vector3(0, upSpeed));
+                            transform.position = transform.position + new Vector3(0, upSpeed);
                         }
                     }
                     else

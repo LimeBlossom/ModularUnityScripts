@@ -9,6 +9,7 @@ public class IfObjectExists : MonoBehaviour, IActivatable
 
     [SerializeField] private GameObject[] targets;
     [SerializeField] private string[] targetTags;
+    [SerializeField] private string[] targetNames;
 
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class SetVelocity : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rigidbody;
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Vector3 newVelocity;
 
     public void Activate()
     {
-        rigidbody.velocity = newVelocity;
+        rb.velocity = newVelocity;
     }
 }

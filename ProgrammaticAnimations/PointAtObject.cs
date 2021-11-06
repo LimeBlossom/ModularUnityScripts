@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class PointAtObject : MonoBehaviour, IActivatable, ISettableGameObject
 {
+    [SerializeField] private GameObject toPoint;
     public GameObject target;
     [SerializeField] private bool threeDimensional;
 
     [SerializeField] private string toPointAt;
+
+    private void Start()
+    {
+        if(toPoint == null)
+        {
+            toPoint = gameObject;
+        }
+    }
 
     public void Activate()
     {
@@ -15,9 +24,9 @@ public class PointAtObject : MonoBehaviour, IActivatable, ISettableGameObject
         {
             if (!threeDimensional)
             {
-                Vector3 dir = transform.position - target.transform.position;
+                Vector3 dir = toPoint.transform.position - target.transform.position;
                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90;
-                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                toPoint.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
             else
             {
