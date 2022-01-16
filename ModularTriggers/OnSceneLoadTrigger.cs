@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
-public class OnSceneLoad : MonoBehaviour
+public class OnSceneLoadTrigger : MonoBehaviour
 {
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;

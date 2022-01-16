@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class OnTrigger : MonoBehaviour
+public class OnCollisionTrigger : MonoBehaviour
 {
     [SerializeField] private bool onEnter = true;
     [SerializeField] private bool onStay;
@@ -14,16 +14,10 @@ public class OnTrigger : MonoBehaviour
     [SerializeField] private string[] namesThatCollide;
     [SerializeField] private string[] tagsToIgnore;
 
-    [SerializeField] private bool debug;
-
-    private void OnTriggerEnter(Collider collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (onEnter)
         {
-            if (debug)
-            {
-                Debug.Log(collision.gameObject.name);
-            }
             bool canActivate = false;
             if (tagsThatCollide.Length == 0 && namesThatCollide.Length == 0)
             {
@@ -54,14 +48,10 @@ public class OnTrigger : MonoBehaviour
             {
                 Activate();
             }
-            if (debug)
-            {
-                Debug.Log("canActivate: " + canActivate);
-            }
         }
     }
 
-    private void OnTriggerStay(Collider collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (onStay)
         {
@@ -91,14 +81,10 @@ public class OnTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider collision)
+    private void OnCollisionExit(Collision collision)
     {
         if (onExit)
         {
-            if (debug)
-            {
-                Debug.Log(collision.gameObject.name);
-            }
             bool canActivate = false;
             if (tagsThatCollide.Length == 0 && namesThatCollide.Length == 0)
             {
@@ -125,10 +111,10 @@ public class OnTrigger : MonoBehaviour
         }
     }
 
-    private void Activate()
+    public void Activate()
     {
         events.Invoke();
-        if (actions != null && actions.Length > 0)
+        if (actions.Length > 0)
         {
             foreach (IActivatable action in actions)
             {
@@ -137,3 +123,4 @@ public class OnTrigger : MonoBehaviour
         }
     }
 }
+
