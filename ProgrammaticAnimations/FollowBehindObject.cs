@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowObject : MonoBehaviour
+public class FollowBehindObject : MonoBehaviour
 {
     [SerializeField] private GameObject follower;
     [SerializeField] private string toFollow;
-    [SerializeField] private Vector3 offset;
+    [SerializeField] private float offset;
 
     private GameObject target;
 
@@ -15,7 +15,7 @@ public class FollowObject : MonoBehaviour
         target = GameObject.Find(toFollow);
         if (target != null)
         {
-            follower.transform.position = target.transform.position + offset;
+            follower.transform.position = target.transform.position - target.transform.forward * offset;
         }
     }
 
@@ -23,7 +23,7 @@ public class FollowObject : MonoBehaviour
     {
         if (target != null)
         {
-            follower.transform.position = target.transform.position + offset;
+            follower.transform.position = target.transform.position - target.transform.forward * offset;
         }
         else
         {
