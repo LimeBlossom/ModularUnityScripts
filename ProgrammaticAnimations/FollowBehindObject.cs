@@ -6,7 +6,8 @@ public class FollowBehindObject : MonoBehaviour
 {
     [SerializeField] private GameObject follower;
     [SerializeField] private string toFollow;
-    [SerializeField] private float offset;
+    [SerializeField] private float distanceBehind;
+    [SerializeField] private Vector3 offset;
 
     private GameObject target;
 
@@ -15,7 +16,7 @@ public class FollowBehindObject : MonoBehaviour
         target = GameObject.Find(toFollow);
         if (target != null)
         {
-            follower.transform.position = target.transform.position - target.transform.forward * offset;
+            follower.transform.position = target.transform.position - target.transform.forward * distanceBehind + offset;
         }
     }
 
@@ -23,7 +24,7 @@ public class FollowBehindObject : MonoBehaviour
     {
         if (target != null)
         {
-            follower.transform.position = target.transform.position - target.transform.forward * offset;
+            follower.transform.position = target.transform.position - target.transform.forward * distanceBehind + offset;
         }
         else
         {
