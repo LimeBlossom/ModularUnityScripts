@@ -15,7 +15,7 @@ public class ChangeScore : MonoBehaviour
         messageHandler = FindObjectOfType<MessageHandler>();
         if(changeOnStart)
         {
-            IncreaseScore(scoreChange);
+            IncreaseScore();
         }
     }
 
@@ -26,6 +26,6 @@ public class ChangeScore : MonoBehaviour
 
     public void IncreaseScore()
     {
-        messageHandler.SendMessage("changeScore", scoreChange);
+        IncreaseScore(scoreChange);
     }
 }
