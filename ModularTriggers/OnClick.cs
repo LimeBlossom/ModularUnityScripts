@@ -8,9 +8,23 @@ public class OnClick : MonoBehaviour
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
 
+    [SerializeField] private int buttonNum = 0;
+
+    [SerializeField] private bool onDown = false;
+    [SerializeField] private bool onUp = false;
+    [SerializeField] private bool whileDown = false;
+
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(whileDown && Input.GetMouseButton(buttonNum))
+        {
+            Activate();
+        }
+        if(onDown && Input.GetMouseButtonDown(buttonNum))
+        {
+            Activate();
+        }
+        if(onUp && Input.GetMouseButtonUp(buttonNum))
         {
             Activate();
         }
