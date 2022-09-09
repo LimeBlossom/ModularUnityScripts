@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class OnCollision2D : MonoBehaviour
+public class OnCollisionModular : MonoBehaviour
 {
     [SerializeField] private bool onEnter = true;
     [SerializeField] private bool onStay;
@@ -51,6 +51,43 @@ public class OnCollision2D : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (onEnter)
+        {
+            bool canActivate = false;
+            if (tagsThatCollide.Length == 0 && namesThatCollide.Length == 0)
+            {
+                canActivate = true;
+            }
+            foreach (string tag in tagsThatCollide)
+            {
+                if (collision.gameObject.tag == tag)
+                {
+                    canActivate = true;
+                }
+            }
+            foreach (string name in namesThatCollide)
+            {
+                if (collision.gameObject.name.Contains(name))
+                {
+                    canActivate = true;
+                }
+            }
+            foreach (string tag in tagsToIgnore)
+            {
+                if (collision.gameObject.tag == tag)
+                {
+                    canActivate = false;
+                }
+            }
+            if (canActivate)
+            {
+                Activate();
+            }
+        }
+    }
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (onStay)
@@ -81,7 +118,67 @@ public class OnCollision2D : MonoBehaviour
         }
     }
 
+    private void OnCollisionStay(Collision collision)
+    {
+        if (onStay)
+        {
+            bool canActivate = false;
+            if (tagsThatCollide.Length == 0 && namesThatCollide.Length == 0)
+            {
+                canActivate = true;
+            }
+            foreach (string tag in tagsThatCollide)
+            {
+                if (collision.gameObject.tag == tag)
+                {
+                    canActivate = true;
+                }
+            }
+            foreach (string name in namesThatCollide)
+            {
+                if (collision.gameObject.name.Contains(name))
+                {
+                    canActivate = true;
+                }
+            }
+            if (canActivate)
+            {
+                Activate();
+            }
+        }
+    }
+
     private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (onExit)
+        {
+            bool canActivate = false;
+            if (tagsThatCollide.Length == 0 && namesThatCollide.Length == 0)
+            {
+                canActivate = true;
+            }
+            foreach (string tag in tagsThatCollide)
+            {
+                if (collision.gameObject.tag == tag)
+                {
+                    canActivate = true;
+                }
+            }
+            foreach (string name in namesThatCollide)
+            {
+                if (collision.gameObject.name.Contains(name))
+                {
+                    canActivate = true;
+                }
+            }
+            if (canActivate)
+            {
+                Activate();
+            }
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
     {
         if (onExit)
         {
