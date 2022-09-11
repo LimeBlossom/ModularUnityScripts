@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[CreateAssetMenu(menuName = "ScriptableObjects/LevelList")]
+[CreateAssetMenu(menuName = "CustomSO/LevelList")]
 public class LevelList : ScriptableObject
 {
     [SerializeField] private string mainMenu;
