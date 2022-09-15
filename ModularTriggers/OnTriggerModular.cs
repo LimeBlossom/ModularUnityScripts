@@ -10,6 +10,7 @@ public class OnTriggerModular: MonoBehaviour
     [SerializeField] private bool onExit;
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
+    [SerializeField] private MonoBehaviour[] setGameObject;
     [SerializeField] private string[] tagsThatCollide;
     [SerializeField] private string[] namesThatCollide;
     [SerializeField] private string[] tagsToIgnore;
@@ -52,7 +53,7 @@ public class OnTriggerModular: MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
             if (debug)
             {
@@ -97,7 +98,7 @@ public class OnTriggerModular: MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
             if (debug)
             {
@@ -131,7 +132,7 @@ public class OnTriggerModular: MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
         }
     }
@@ -161,7 +162,7 @@ public class OnTriggerModular: MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
         }
     }
@@ -195,7 +196,7 @@ public class OnTriggerModular: MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
         }
     }
@@ -229,12 +230,12 @@ public class OnTriggerModular: MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
         }
     }
 
-    private void Activate()
+    private void Activate(GameObject go)
     {
         events.Invoke();
         if (actions != null && actions.Length > 0)
@@ -242,6 +243,14 @@ public class OnTriggerModular: MonoBehaviour
             foreach (IActivatable action in actions)
             {
                 action.Activate();
+            }
+        }
+        if(setGameObject != null && setGameObject.Length > 0)
+        {
+            Debug.Log("Sending game object");
+            foreach (ISettableGameObject toPass in setGameObject)
+            {
+                toPass.SetGameObject(go);
             }
         }
     }
