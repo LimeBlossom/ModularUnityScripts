@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class MultiplyScaleAction : MonoBehaviour, IActivatable
 {
+    [SerializeField] private Transform toScale;
     [SerializeField] private float multiplier;
 
     public void Activate()
     {
-        transform.localScale *= multiplier;
+        toScale.localScale *= multiplier;
     }
 }

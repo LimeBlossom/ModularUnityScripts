@@ -22,24 +22,24 @@ public class SpawnAction : MonoBehaviour, IActivatable
             foreach (GameObject spawn in toSpawn)
             {
                 spawned = Instantiate(spawn);
-            }
-        }
 
-        if (spawnLocation.Length > 0)
-        {
-            Transform tempLocation = spawnLocation[Random.Range(0, spawnLocation.Length)];
-            if(spawned != null)
-            {
-                spawned.transform.position = tempLocation.position;
-            } 
-        }
-        if (spawnRotation != null)
-        {
-            spawned.transform.rotation = spawnRotation.rotation;
-        }
-        if(parentTo != null)
-        {
-            spawned.transform.SetParent(parentTo.transform);
+                if (spawnLocation.Length > 0)
+                {
+                    Transform tempLocation = spawnLocation[Random.Range(0, spawnLocation.Length)];
+                    if (spawned != null)
+                    {
+                        spawned.transform.position = tempLocation.position;
+                    }
+                }
+                if (spawnRotation != null)
+                {
+                    spawned.transform.rotation = spawnRotation.rotation;
+                }
+                if (parentTo != null)
+                {
+                    spawned.transform.SetParent(parentTo.transform);
+                }
+            }
         }
     }
 }

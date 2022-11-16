@@ -1,10 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetVelocity : MonoBehaviour, IActivatable
+public class SetVelocity2D : MonoBehaviour, IActivatable
 {
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Vector3 minVelocity;
     [SerializeField] private Vector3 maxVelocity;
 
