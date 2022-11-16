@@ -94,14 +94,17 @@ public class Die : MonoBehaviour
 
     private void DestroySelf()
     {
-        if(spawnOnDeath.Length > 0)
+        if(spawnOnDeath != null)
         {
-            foreach(GameObject toSpawn in spawnOnDeath)
+            if (spawnOnDeath.Length > 0)
             {
-                GameObject spawned = Instantiate(toSpawn);
-                if (spawnAtPosition)
+                foreach (GameObject toSpawn in spawnOnDeath)
                 {
-                    spawned.transform.position = transform.position;
+                    GameObject spawned = Instantiate(toSpawn);
+                    if (spawnAtPosition)
+                    {
+                        spawned.transform.position = transform.position;
+                    }
                 }
             }
         }
