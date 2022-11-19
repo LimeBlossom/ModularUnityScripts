@@ -123,7 +123,7 @@ public class Spew : MonoBehaviour
             spewed.transform.position = new Vector3(
                 transform.position.x + (float)random.NextDouble() * (m_localPositionRange.max.x - m_localPositionRange.min.x) + m_localPositionRange.min.x, //(m_localPositionRange.min.x, m_localPositionRange.max.x),
                 transform.position.y + (float)random.NextDouble() * (m_localPositionRange.max.y - m_localPositionRange.min.y) + m_localPositionRange.min.y, // random.Next(m_localPositionRange.min.y, m_localPositionRange.max.y),
-                0);
+                transform.position.z + (float)random.NextDouble() * (m_localPositionRange.max.z - m_localPositionRange.min.z) + m_localPositionRange.min.z);
         }
         else if (attachToObject != null)
         {
@@ -131,7 +131,7 @@ public class Spew : MonoBehaviour
             spewed.transform.position = new Vector3(
                 transform.position.x + (float)random.NextDouble() * (m_localPositionRange.max.x - m_localPositionRange.min.x) + m_localPositionRange.min.x, //(m_localpositionrange.min.x, m_localpositionrange.max.x),
                 transform.position.y + (float)random.NextDouble() * (m_localPositionRange.max.y - m_localPositionRange.min.y) + m_localPositionRange.min.y, // random.next(m_localpositionrange.min.y, m_localpositionrange.max.y),
-                0);
+                transform.position.z + (float)random.NextDouble() * (m_localPositionRange.max.z - m_localPositionRange.min.z) + m_localPositionRange.min.z);
         }
         else
         {
@@ -140,7 +140,7 @@ public class Spew : MonoBehaviour
             spewed.transform.position = new Vector3(
                 transform.position.x + (float)random.NextDouble() * (m_localPositionRange.max.x - m_localPositionRange.min.x) + m_localPositionRange.min.x, // Random.Range(m_localPositionRange.min.x, m_localPositionRange.max.x),
                 transform.position.y + (float)random.NextDouble() * (m_localPositionRange.max.y - m_localPositionRange.min.y) + m_localPositionRange.min.y, // Random.Range(m_localPositionRange.min.y, m_localPositionRange.max.y),
-                0);
+                transform.position.z + (float)random.NextDouble() * (m_localPositionRange.max.z - m_localPositionRange.min.z) + m_localPositionRange.min.z);
         }
     }
 }
