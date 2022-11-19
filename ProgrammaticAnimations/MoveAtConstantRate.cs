@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MoveAtConstantRate : MonoBehaviour
 {
+    [SerializeField] private Transform toMove;
+
     public Vector3 minSpeed;
     public Vector3 maxSpeed;
 
@@ -15,6 +17,10 @@ public class MoveAtConstantRate : MonoBehaviour
 
     private void Start()
     {
+        if(toMove == null)
+        {
+            toMove = transform;
+        }
         if(speed == Vector3.zero)
         {
             if(direction == Vector3.zero)
@@ -30,6 +36,6 @@ public class MoveAtConstantRate : MonoBehaviour
 
     void Update()
     {
-        transform.position = transform.position + speed * Time.deltaTime;
+        toMove.position = toMove.position + speed * Time.deltaTime;
     }
 }

@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class ConstantRotation : MonoBehaviour
 {
-    public Vector3 speed;
+    [SerializeField] private GameObject toRotate;
+    [SerializeField] private Vector3 speed;
 
+    private void Start()
+    {
+        if(toRotate == null)
+        {
+            toRotate = gameObject;
+        }
+    }
     void Update()
     {
-        transform.rotation = Quaternion.Euler(transform.eulerAngles + speed * Time.deltaTime);
+        toRotate.transform.rotation = Quaternion.Euler(toRotate.transform.eulerAngles + speed * Time.deltaTime);
     }
 }
