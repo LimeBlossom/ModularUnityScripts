@@ -50,7 +50,7 @@ public class SceneLoader : MonoBehaviour, IActivatable
         if(loadNextScene)
         {
             int curIndex = SceneManager.GetActiveScene().buildIndex;
-            if(curIndex == SceneManager.sceneCount + 2)
+            if(curIndex == SceneManager.sceneCountInBuildSettings - 1)
             {
                 SceneManager.LoadScene(0);
             }
