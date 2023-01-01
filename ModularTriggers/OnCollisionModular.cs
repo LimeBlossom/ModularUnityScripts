@@ -10,6 +10,7 @@ public class OnCollisionModular : MonoBehaviour
     [SerializeField] private bool onExit;
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
+    [SerializeField] private MonoBehaviour[] iSettables;
     [SerializeField] private string[] tagsThatCollide;
     [SerializeField] private string[] namesThatCollide;
     [SerializeField] private string[] tagsToIgnore;
@@ -46,7 +47,7 @@ public class OnCollisionModular : MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
         }
     }
@@ -83,7 +84,10 @@ public class OnCollisionModular : MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                if(collision.relativeVelocity.magnitude > 1)
+                {
+                    Activate(collision.gameObject);
+                }
             }
         }
     }
@@ -113,7 +117,7 @@ public class OnCollisionModular : MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
         }
     }
@@ -143,7 +147,7 @@ public class OnCollisionModular : MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
         }
     }
@@ -173,7 +177,7 @@ public class OnCollisionModular : MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
         }
     }
@@ -203,12 +207,12 @@ public class OnCollisionModular : MonoBehaviour
             }
             if (canActivate)
             {
-                Activate();
+                Activate(collision.gameObject);
             }
         }
     }
 
-    public void Activate()
+    public void Activate(GameObject collidedWith)
     {
         events.Invoke();
         if (actions.Length > 0)
@@ -216,6 +220,13 @@ public class OnCollisionModular : MonoBehaviour
             foreach (IActivatable action in actions)
             {
                 action.Activate();
+            }
+        }
+        if (iSettables.Length > 0)
+        {
+            foreach (ISettableGameObject settable in iSettables)
+            {
+                settable.SetGameObject(collidedWith);
             }
         }
     }

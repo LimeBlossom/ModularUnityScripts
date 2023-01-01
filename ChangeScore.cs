@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChangeScore : MonoBehaviour
+public class ChangeScore : MonoBehaviour, IActivatable
 {
     private MessageHandler messageHandler;
 
@@ -27,5 +27,10 @@ public class ChangeScore : MonoBehaviour
     public void IncreaseScore()
     {
         IncreaseScore(scoreChange);
+    }
+
+    public void Activate()
+    {
+        IncreaseScore();
     }
 }

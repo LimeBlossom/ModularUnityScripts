@@ -46,7 +46,7 @@ public class Spew : MonoBehaviour
         }
         if(onAwake)
         {
-            DoSpew();
+            StartSpew(random.Next(m_numberToSpew.min, m_numberToSpew.max));
         }
     }
 

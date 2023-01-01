@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreKeeper : MonoBehaviour
 {
     public Text textToUpdate;
+    public TextMeshProUGUI[] textMeshPro;
 
-    private int score = 0;
+    [SerializeField] private IntReference score;
 
     void OnEnable()
     {
@@ -34,8 +36,15 @@ public class ScoreKeeper : MonoBehaviour
 
     public void IncreaseScore(int value)
     {
-        score += value;
-        textToUpdate.text = "Score: " + score.ToString();
+        score.variable.value += value;
+        if(textToUpdate)
+        {
+            textToUpdate.text = "Score: " + score.value.ToString();
+        }
+        foreach(TextMeshProUGUI textMesh in textMeshPro)
+        {
+            textMesh.text = "Score: " + score.value.ToString();
+        }
     }
 
 

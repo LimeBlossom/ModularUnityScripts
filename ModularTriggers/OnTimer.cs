@@ -12,7 +12,7 @@ public class OnTimer : MonoBehaviour, IActivatable
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
 
-    private float timer;
+    [SerializeField] private float timer;
     private bool ranOnce = false;
 
     public void Activate()
