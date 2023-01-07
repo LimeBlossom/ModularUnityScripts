@@ -15,6 +15,14 @@ public class OnCollisionModular : MonoBehaviour
     [SerializeField] private string[] namesThatCollide;
     [SerializeField] private string[] tagsToIgnore;
 
+    private void Start()
+    {
+        if (GetComponent<Rigidbody>() == null)
+        {
+            Debug.LogError("OnCollisionModular needs to be attached to a gameobject with a rigidbody.");
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(onEnter)
