@@ -26,7 +26,10 @@ public class OnTimer : MonoBehaviour, IActivatable
         {
             timer = Random.Range(activateAfterTime.min, activateAfterTime.max);
         }
-        StartCoroutine(CountDown(timer));
+        if(enabled)
+        {
+            StartCoroutine(CountDown(timer));
+        }
     }
 
     void Awake()

@@ -12,7 +12,7 @@ public class Spew : MonoBehaviour
     public bool adjustForLag = false;
     public bool onMessage;
 
-    public string message;
+    public string messageType;
 
     public bool attachToParent;
     public GameObject attachToObject;
@@ -33,6 +33,22 @@ public class Spew : MonoBehaviour
     [System.Serializable]
     public struct LocalPositionRange { public Vector3 min; public Vector3 max; }
     public LocalPositionRange m_localPositionRange;
+
+    void OnEnable()
+    {
+        if (onMessage)
+        {
+            MessageCenter.OnMessage += CheckMessage;
+        }
+    }
+
+    void OnDisable()
+    {
+        if (onMessage)
+        {
+            MessageCenter.OnMessage -= CheckMessage;
+        }
+    }
 
     private void Awake()
     {
@@ -58,9 +74,9 @@ public class Spew : MonoBehaviour
         }
     }
 
-    public void CheckMessage(string value)
+    public void CheckMessage(string type, string message)
     {
-        if(value == message)
+        if(type == this.messageType)
         {
             StartSpew(random.Next(m_numberToSpew.min, m_numberToSpew.max)); //Random.Range(m_numberToSpew.min, m_numberToSpew.max));
         }

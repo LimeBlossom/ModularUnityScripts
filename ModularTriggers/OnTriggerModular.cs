@@ -8,9 +8,9 @@ public class OnTriggerModular: MonoBehaviour
     [SerializeField] private bool onEnter = true;
     [SerializeField] private bool onStay;
     [SerializeField] private bool onExit;
+    [SerializeField] private MonoBehaviour[] setGameObject;
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
-    [SerializeField] private MonoBehaviour[] setGameObject;
     [SerializeField] private string[] tagsThatCollide;
     [SerializeField] private string[] namesThatCollide;
     [SerializeField] private string[] tagsToIgnore;
@@ -237,20 +237,20 @@ public class OnTriggerModular: MonoBehaviour
 
     private void Activate(GameObject go)
     {
+        if (setGameObject != null && setGameObject.Length > 0)
+        {
+            Debug.Log("Sending game object");
+            foreach (ISettableGameObject toPass in setGameObject)
+            {
+                toPass.SetGameObject(go);
+            }
+        }
         events.Invoke();
         if (actions != null && actions.Length > 0)
         {
             foreach (IActivatable action in actions)
             {
                 action.Activate();
-            }
-        }
-        if(setGameObject != null && setGameObject.Length > 0)
-        {
-            Debug.Log("Sending game object");
-            foreach (ISettableGameObject toPass in setGameObject)
-            {
-                toPass.SetGameObject(go);
             }
         }
     }

@@ -17,9 +17,9 @@ public class OnCollisionModular : MonoBehaviour
 
     private void Start()
     {
-        if (GetComponent<Rigidbody>() == null)
+        if (GetComponent<Rigidbody>() == null && GetComponent<Rigidbody2D>() == null)
         {
-            Debug.LogError("OnCollisionModular needs to be attached to a gameobject with a rigidbody.");
+            Debug.LogError("OnCollisionModular needs to be attached to a gameobject with a rigidbody or rigidbody2d.");
         }
     }
 

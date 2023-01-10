@@ -4,8 +4,8 @@ using UnityEngine;
 using System;
 
 [System.Serializable]
-public struct MinMaxFloat { public float min; public float max; }
-public struct MinMaxInt { public int min; public int max; }
+//public struct MinMaxFloat { public float min; public float max; }
+//public struct MinMaxInt { public int min; public int max; }
 public enum CardinalDirection { North, East, South, West }
 
 // VECTOR3
