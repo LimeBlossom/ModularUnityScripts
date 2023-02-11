@@ -21,7 +21,7 @@ public class OnMessage : MonoBehaviour
         MessageCenter.OnUserMessage -= CheckMessage;
     }
 
-    private void CheckMessage(string type, User user, string message)
+    private void CheckMessage(string type, TwitchUser user, string message)
     {
         if(debug)
         {

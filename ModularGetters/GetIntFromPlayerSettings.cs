@@ -7,7 +7,7 @@ public class GetIntFromPlayerSettings : MonoBehaviour, IActivatable
     [SerializeField] private string intName;
     [SerializeField] private MonoBehaviour[] intSettables;
 
-    [SerializeField] private bool debug = false;
+    //[SerializeField] private bool debug = false;
 
     public void Activate()
     {
