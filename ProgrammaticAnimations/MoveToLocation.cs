@@ -7,6 +7,7 @@ public class MoveToLocation : MonoBehaviour, IActivatable
     [SerializeField] private GameObject toMove;
 
     public Vector3 positionToMoveTo;
+    public Transform transformToMoveTo;
     public float timeToMove;
     [SerializeField] private bool localPosition = false;
 
@@ -20,7 +21,14 @@ public class MoveToLocation : MonoBehaviour, IActivatable
 
     public void Activate()
     {
-        StartCoroutine(LerpPosition(positionToMoveTo, timeToMove));
+        if(transformToMoveTo == null)
+        {
+            StartCoroutine(LerpPosition(positionToMoveTo, timeToMove));
+        }
+        else
+        {
+            StartCoroutine(LerpPosition(transformToMoveTo.position, timeToMove));
+        }
     }
 
     IEnumerator LerpPosition(Vector3 targetPosition, float duration)
