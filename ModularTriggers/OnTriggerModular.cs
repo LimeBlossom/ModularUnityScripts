@@ -242,6 +242,10 @@ public class OnTriggerModular: MonoBehaviour
             Debug.Log("Sending game object");
             foreach (ISettableGameObject toPass in setGameObject)
             {
+		if(debug)
+		{
+		    Debug.Log($"{name}:OnTriggerModular is setting {go.name} to {setGameObject.Length} scripts.");
+		}
                 toPass.SetGameObject(go);
             }
         }

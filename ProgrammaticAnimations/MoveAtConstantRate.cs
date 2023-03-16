@@ -14,6 +14,8 @@ public class MoveAtConstantRate : MonoBehaviour
     public float maxRate;
 
     public Vector3 speed;
+    [SerializeField] private bool timesDeltaTime = true;
+
 
     private void Start()
     {
@@ -36,6 +38,12 @@ public class MoveAtConstantRate : MonoBehaviour
 
     void Update()
     {
-        toMove.position = toMove.position + speed * Time.deltaTime;
+        Vector3 tempSpeed = speed;
+        if (timesDeltaTime)
+        {
+            tempSpeed *= Time.deltaTime;
+        }
+
+        toMove.position = toMove.position + tempSpeed;
     }
 }

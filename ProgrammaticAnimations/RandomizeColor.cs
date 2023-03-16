@@ -1,26 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class RandomizeColor : MonoBehaviour
+public class RandomizeColor : MonoBehaviour, IActivatable
 {
     [System.Serializable]
     public struct ColorRange { public Color min; public Color max; }
-    public ColorRange m_colorRange;
+    [SerializeField] private ColorRange m_colorRange;
 
-    [SerializeField] private SpriteRenderer toColor;
+    [SerializeField] private Color[] colors;
 
-    void Awake()
+    [SerializeField] private SpriteRenderer[] spriteToChange;
+    [SerializeField] private Image[] imageToChange;
+
+    public void Activate()
     {
         Color newColor = new Color(Random.Range(m_colorRange.min.r, m_colorRange.max.r), Random.Range(m_colorRange.min.g, m_colorRange.max.g), Random.Range(m_colorRange.min.b, m_colorRange.max.b));
 
-        if(toColor == null)
+        if(colors.Length > 0)
         {
-            transform.GetComponent<SpriteRenderer>().color = newColor;
+            newColor = colors[Random.Range(0, colors.Length)];
         }
-        else
+
+        foreach(SpriteRenderer spriteRenderer in spriteToChange)
         {
-            toColor.color = newColor;
+            spriteRenderer.color = newColor;
+        }
+
+        foreach (Image image in imageToChange)
+        {
+            image.color = newColor;
         }
     }
 }

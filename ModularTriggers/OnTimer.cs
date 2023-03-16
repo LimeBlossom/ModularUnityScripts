@@ -11,6 +11,7 @@ public class OnTimer : MonoBehaviour, IActivatable
     [SerializeField] private MinMaxFloat activateAfterTime;
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
+    [SerializeField] private bool unscaledTime = false;
 
     [SerializeField] private float timer;
     private bool ranOnce = false;
@@ -44,7 +45,14 @@ public class OnTimer : MonoBehaviour, IActivatable
 
     IEnumerator CountDown(float duration)
     {
-        yield return new WaitForSeconds(timer);
+        if(unscaledTime)
+        {
+            yield return new WaitForSecondsRealtime(timer);
+        }
+        else
+        {
+            yield return new WaitForSeconds(timer);
+        }
         ActivateActions();
         if(startTimerOnAwake)
         {

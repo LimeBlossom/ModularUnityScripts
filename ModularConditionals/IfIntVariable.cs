@@ -52,15 +52,16 @@ public class IfIntVariable : MonoBehaviour, IActivatable
 
     private void ActivateActions()
     {
+        print($"{gameObject.name} IfIntVariable:ActivateActions");
         events.Invoke();
         if (actions != null && actions.Length > 0)
         {
             foreach (MonoBehaviour script in actions)
             {
-                if (!script.TryGetComponent<IActivatable>(out IActivatable value))
-                {
-                    Debug.Log(script.gameObject + " tried to use " + script.GetType() + " but it does not implement IActivatable!");
-                }
+                //if (!script.TryGetComponent<IActivatable>(out IActivatable value))
+                //{
+                //    Debug.Log(script.gameObject + " tried to use " + script.GetType() + " but it does not implement IActivatable!");
+                //}
             }
             foreach (IActivatable action in actions)
             {
