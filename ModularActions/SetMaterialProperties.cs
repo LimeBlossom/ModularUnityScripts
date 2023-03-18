@@ -9,6 +9,7 @@ public class SetMaterialProperties : MonoBehaviour, IActivatable, ISettableColor
 
     public void Activate()
     {
+        Debug.Log($"SetMaterialProperties {material.name}");
         material.SetColor("_Color", color);
     }
 
