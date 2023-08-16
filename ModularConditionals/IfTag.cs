@@ -1,19 +1,19 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class IfFindObject : MonoBehaviour, IActivatable
+public class IfTag : MonoBehaviour, IActivatable
 {
-    [SerializeField] private string tagToFind;
-    [SerializeField] private bool ifNotFind;
+    [SerializeField] private GameObject toCheck;
+    [SerializeField] private string tagMatch;
 
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
 
     public void Activate()
     {
-        if((GameObject.FindGameObjectWithTag(tagToFind) != null) != ifNotFind)
+        if (toCheck.CompareTag(tagMatch))
         {
             ActivateActions();
         }

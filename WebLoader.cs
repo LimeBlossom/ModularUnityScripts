@@ -5,9 +5,17 @@ using UnityEngine;
 public class WebLoader : MonoBehaviour, IActivatable
 {
     [SerializeField] private string URL;
+    [SerializeField] private bool gameOverlay = false;
     
     public void Activate()
     {
-        Application.OpenURL(URL);
+        if(gameOverlay)
+        {
+            Steamworks.SteamFriends.ActivateGameOverlayToWebPage(URL);
+        }
+        else
+        {
+            Application.OpenURL(URL);
+        }
     }
 }

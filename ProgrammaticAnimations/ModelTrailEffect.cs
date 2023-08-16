@@ -59,8 +59,8 @@ public class ModelTrailEffect : MonoBehaviour
                 newGO.transform.rotation = toGiveTrail.transform.rotation;
                 newGO.transform.localScale = toGiveTrail.transform.lossyScale;
             }
+            oldPos = toGiveTrail.transform.position;
         }
-        oldPos = toGiveTrail.transform.position;
     }
 
     private List<MeshRenderer> FindAllMeshesInChildren(GameObject parent)

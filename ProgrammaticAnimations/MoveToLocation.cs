@@ -11,22 +11,22 @@ public class MoveToLocation : MonoBehaviour, IActivatable
     public float timeToMove;
     [SerializeField] private bool localPosition = false;
 
-    private void Start()
-    {
-        if(toMove == null)
-        {
-            toMove = gameObject;
-        }
-    }
-
     public void Activate()
     {
         if(transformToMoveTo == null)
         {
+            if (toMove == null)
+            {
+                toMove = gameObject;
+            }
             StartCoroutine(LerpPosition(positionToMoveTo, timeToMove));
         }
         else
         {
+            if (toMove == null)
+            {
+                toMove = gameObject;
+            }
             StartCoroutine(LerpPosition(transformToMoveTo.position, timeToMove));
         }
     }
@@ -51,7 +51,7 @@ public class MoveToLocation : MonoBehaviour, IActivatable
                 toMove.transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
             }
             
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             yield return null;
         }
         if(localPosition)

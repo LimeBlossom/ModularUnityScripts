@@ -14,7 +14,17 @@ public class OnTimer : MonoBehaviour, IActivatable
     [SerializeField] private bool unscaledTime = false;
 
     [SerializeField] private float timer;
-    private bool ranOnce = false;
+    [SerializeField] private bool ranOnce = false;
+
+    void Awake()
+    {
+        timer = Random.Range(activateAfterTime.min, activateAfterTime.max);
+
+        if (startTimerOnAwake)
+        {
+            Activate();
+        }
+    }
 
     public void Activate()
     {
@@ -30,16 +40,6 @@ public class OnTimer : MonoBehaviour, IActivatable
         if(enabled)
         {
             StartCoroutine(CountDown(timer));
-        }
-    }
-
-    void Awake()
-    {
-        timer = Random.Range(activateAfterTime.min, activateAfterTime.max);
-
-        if (startTimerOnAwake)
-        {
-            Activate();
         }
     }
 

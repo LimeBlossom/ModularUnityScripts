@@ -13,7 +13,6 @@ public static class MessageCenter
     public static void InvokeMessage(string type, string message = "")
     {
         OnMessage?.Invoke(type, message);
-        //Debug.Log($"Invoked Message: {type} {message}");
     }
 
     public static void InvokeUserMessage(string type, TwitchUser user, string message = "")

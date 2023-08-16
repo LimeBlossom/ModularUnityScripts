@@ -40,6 +40,11 @@ public class LevelList : ScriptableObject
         }
     }
 
+    public string[] GetMainLevels()
+    {
+        return mainLevels;
+    }
+
     public Scene GetMainLevel(int number)
     {
         if (number <= mainLevels.Length - 1)

@@ -3,41 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class OnMessage : MonoBehaviour
+public class OnUserMessage : MonoBehaviour
 {
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
 
-    [SerializeField] private StringReference type;
-    [SerializeField] private StringReference message;
+    [SerializeField] private string type;
     [SerializeField] private bool debug;
 
     void OnEnable()
     {
-        MessageCenter.OnMessage += CheckMessage;
+        MessageCenter.OnUserMessage += CheckUserMessage;
     }
 
     void OnDisable()
     {
-        MessageCenter.OnMessage -= CheckMessage;
+        MessageCenter.OnUserMessage -= CheckUserMessage;
     }
 
-    private void CheckMessage(string type, string message)
+    private void CheckUserMessage(string type, TwitchUser user, string message)
     {
         if(debug)
         {
             Debug.Log("Received Message.");
         }
-        if(type == this.type.value)
+        if(type == this.type)
         {
-            if(this.message.value == "" || this.message.value == message)
+            if(debug)
             {
-                if (debug)
-                {
-                    Debug.Log("Activated via message.");
-                }
-                Activate();
+                Debug.Log("Activated via message.");
             }
+            Activate();
         }
     }
 

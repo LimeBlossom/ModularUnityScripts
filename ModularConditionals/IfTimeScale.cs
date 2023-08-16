@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class IfIntVariable : MonoBehaviour, IActivatable
+public class IfTimeScale : MonoBehaviour, IActivatable
 {
     [SerializeField] private float isSmallerThan = float.NegativeInfinity;
     [SerializeField] private float isEqualTo = float.PositiveInfinity;
     [SerializeField] private float isLargerThan = float.PositiveInfinity;
-
-    [SerializeField] private IntVariable toCheck;
 
     [SerializeField] private bool onUpdate = true;
 
@@ -20,28 +18,27 @@ public class IfIntVariable : MonoBehaviour, IActivatable
     {
         if (isSmallerThan > float.NegativeInfinity)
         {
-            if (toCheck.value < isSmallerThan)
+            if (Time.timeScale < isSmallerThan)
             {
                 ActivateActions();
             }
         }
         if (isEqualTo < float.PositiveInfinity)
         {
-            if (toCheck.value == isEqualTo)
+            if (Time.timeScale == isEqualTo)
             {
                 ActivateActions();
             }
         }
         if (isLargerThan < float.PositiveInfinity)
         {
-            if (toCheck.value > isLargerThan)
+            if (Time.timeScale > isLargerThan)
             {
                 ActivateActions();
             }
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (onUpdate)
@@ -55,13 +52,6 @@ public class IfIntVariable : MonoBehaviour, IActivatable
         events.Invoke();
         if (actions != null && actions.Length > 0)
         {
-            foreach (MonoBehaviour script in actions)
-            {
-                //if (!script.TryGetComponent<IActivatable>(out IActivatable value))
-                //{
-                //    Debug.Log(script.gameObject + " tried to use " + script.GetType() + " but it does not implement IActivatable!");
-                //}
-            }
             foreach (IActivatable action in actions)
             {
                 action.Activate();
@@ -69,4 +59,3 @@ public class IfIntVariable : MonoBehaviour, IActivatable
         }
     }
 }
-

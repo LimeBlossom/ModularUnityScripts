@@ -21,7 +21,7 @@ public class RotateAction : MonoBehaviour, IActivatable
             if(numberOfTimes > 1)
             {
                 Activate();
-                numberOfTimes -= Time.timeScale;
+                numberOfTimes -= 1 * (timesDeltaTime ? Time.deltaTime : 1);
             }
         }
     }
@@ -39,7 +39,7 @@ public class RotateAction : MonoBehaviour, IActivatable
                 }
                 else
                 {
-                    t.Rotate(rotation * Time.timeScale);
+                    t.Rotate(rotation);
                 }
             }
         }
