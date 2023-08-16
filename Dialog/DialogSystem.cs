@@ -21,8 +21,6 @@ public class DialogSystem : MonoBehaviour {
     [SerializeField] private bool nextOnTimeRestore = false;
     [SerializeField] private bool nextOnRotate = false;
 
-    [SerializeField] private TimeTracker timeTracker;
-    [SerializeField] private GameController gameController;
     [SerializeField] private DialogAnimationController dialogAnimationController;
 
     private GameObject nextButton;
@@ -356,10 +354,10 @@ public class DialogSystem : MonoBehaviour {
         switch(word)
         {
             case "#Pause":
-                timeTracker.Pause();
+                MessageCenter.InvokeMessage("Pause", "");
                 break;
             case "#Unpause":
-                timeTracker.Unpause();
+                MessageCenter.InvokeMessage("Unpause", "");
                 break;
             case "#EnableUnpauseOnInput":
                 MessageCenter.InvokeMessage("EnableUnpauseOnInput", "");
@@ -368,7 +366,7 @@ public class DialogSystem : MonoBehaviour {
                 MessageCenter.InvokeMessage("DisableUnpauseOnInput", "");
                 break;
             case "#FinishLevel":
-                gameController.OnFinishLevel();
+                MessageCenter.InvokeMessage("FinishLevel", "");
                 break;
             default:
                 return false; // Did not hit a case.
