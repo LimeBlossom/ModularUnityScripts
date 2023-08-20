@@ -51,10 +51,10 @@ public class SmoothSpringyCamera : MonoBehaviour
     {
         if (target == null)
         {
-            MovementController playerScript = FindObjectOfType<MovementController>();
-            if (playerScript != null)
+            //MovementController playerScript = FindObjectOfType<MovementController>();
+            //if (playerScript != null)
             {
-                target = playerScript.transform;
+                //target = playerScript.transform;
             }
             if(target != null)
             {

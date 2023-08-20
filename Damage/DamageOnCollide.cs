@@ -35,7 +35,7 @@ public class DamageOnCollide : MonoBehaviour
     {
         curVelocity = rb.velocity.magnitude;
         // If we're moving fast enough
-        if (curVelocity > velocityRequired || timeActive < 0.01f)
+        if (curVelocity >= velocityRequired || timeActive < 0.01f)
         {
             int layer = 1 << LayerMask.NameToLayer("Default");
             RaycastHit[] hits = Physics.RaycastAll(
@@ -72,7 +72,7 @@ public class DamageOnCollide : MonoBehaviour
         if (isActive)
         {
             // If we're moving fast enough
-            if (rb.velocity.magnitude > velocityRequired || lastFrameVelocity > velocityRequired || timeActive < 0.01f)
+            if (rb.velocity.magnitude >= velocityRequired || lastFrameVelocity >= velocityRequired || timeActive < 0.01f)
             {
                 if(debug)
                 {
@@ -97,7 +97,7 @@ public class DamageOnCollide : MonoBehaviour
         if (isActive && onTrigger)
         {
             // If we're moving fast enough
-            if (rb.velocity.magnitude > velocityRequired || lastFrameVelocity > velocityRequired || timeActive < 0.01f)
+            if (rb.velocity.magnitude >= velocityRequired || lastFrameVelocity >= velocityRequired || timeActive < 0.01f)
             {
                 // If we've hit something breakable
                 BreakHit(collision.transform);
@@ -150,7 +150,7 @@ public class DamageOnCollide : MonoBehaviour
                 return;
             }
         }
-        if (!fromRaycast && selfDestructOnCollide && !t.GetComponentInChildren<Drum>())
+        if (!fromRaycast && selfDestructOnCollide) //!t.GetComponentInChildren<Drum>())
         {
             if (debug)
             {

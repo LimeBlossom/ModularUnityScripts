@@ -5,23 +5,29 @@ using UnityEngine.Events;
 
 public class OnKey : MonoBehaviour
 {
-    [SerializeField] private string[] keys;
+    [SerializeField] private KeyCode[] keys;
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
 
     [SerializeField] private bool onDown = false;
+    [SerializeField] private bool onUp = false;
 
     void Update()
     {
         bool canActivate = false;
-        foreach(string key in keys)
+        foreach(KeyCode key in keys)
         {
-            if (!onDown && Input.GetKey(key))
+            if (!onDown && !onUp && Input.GetKey(key))
             {
                 canActivate = true;
                 break;
             }
             else if(onDown && Input.GetKeyDown(key))
+            {
+                canActivate = true;
+                break;
+            }
+            else if(onUp && Input.GetKeyUp(key))
             {
                 canActivate = true;
                 break;

@@ -11,7 +11,7 @@ public class WebLoader : MonoBehaviour, IActivatable
     {
         if(gameOverlay)
         {
-            Steamworks.SteamFriends.ActivateGameOverlayToWebPage(URL);
+            //Steamworks.SteamFriends.ActivateGameOverlayToWebPage(URL);
         }
         else
         {

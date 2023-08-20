@@ -7,9 +7,9 @@ public class SelfDestructOnCollide : MonoBehaviour {
     private void OnCollisionEnter(Collision collision)
     {
         // Self-destruct if we hit something with map data
-        if(collision.gameObject.GetComponent<MapPieceData>())
-        {
+        //if(collision.gameObject.GetComponent<MapPieceData>())
+        //{
             Destroy(gameObject);
-        }
+        //}
     }
 }

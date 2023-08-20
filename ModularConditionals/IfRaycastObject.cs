@@ -23,7 +23,7 @@ public class IfRaycastObject : MonoBehaviour, IActivatable, IGettableGameObject
 
     public void Activate()
     {
-        checkForHits();
+        CheckForHits();
     }
 
     public GameObject GetGameObject()
@@ -44,18 +44,18 @@ public class IfRaycastObject : MonoBehaviour, IActivatable, IGettableGameObject
     {
         if (onUpdate)
         {
-            checkForHits();
+            CheckForHits();
         }
     }
 
-    private void checkForHits()
+    private void CheckForHits()
     {
         float smallestDistance = Mathf.Infinity;
         GameObject nearestObj = null;
 
         foreach (GameObject target in targets)
         {
-            if (raycastCanHit(target))
+            if (RaycastCanHit(target, origin, toIgnore, targetTags))
             {
                 float dist = Vector3.Distance(origin.position, target.transform.position);
                 if (dist < smallestDistance)
@@ -70,7 +70,7 @@ public class IfRaycastObject : MonoBehaviour, IActivatable, IGettableGameObject
         {
             foreach (GameObject target in GameObject.FindGameObjectsWithTag(tag))
             {
-                if (raycastCanHit(target))
+                if (RaycastCanHit(target, origin, toIgnore, targetTags))
                 {
                     float dist = Vector3.Distance(origin.position, target.transform.position);
                     if (dist < smallestDistance)
@@ -89,51 +89,54 @@ public class IfRaycastObject : MonoBehaviour, IActivatable, IGettableGameObject
         }
     }
 
-    private bool raycastCanHit(GameObject target)
+    static public bool RaycastCanHit(GameObject target, Transform origin, GameObject[] toIgnore = null, string[] targetTags = null)
     {
         Vector3 pos = origin.position;
         Vector3 dir = (target.transform.position - pos).normalized;
 
-        if (debug)
-        {
-            Debug.DrawLine(pos, pos + dir * 10, Color.red, Mathf.Infinity);
-        }
+        //if (debug)
+        //{
+        //    Debug.DrawLine(pos, pos + dir * 10, Color.red, Mathf.Infinity);
+        //}
 
 
         RaycastHit[] hits = Physics.RaycastAll(origin.position, dir * 300).OrderBy(h => h.distance).ToArray();
-        if(debug)
-        {
-            foreach(RaycastHit hit in hits)
-            {
-                Debug.Log(hit.collider.gameObject.name);
-            }
-        }
+        //if(debug)
+        //{
+        //    foreach(RaycastHit hit in hits)
+        //    {
+        //        Debug.Log(hit.collider.gameObject.name);
+        //    }
+        //}
         foreach (RaycastHit hit in hits)
         {
             if (hit.collider != null)
             {
-                if (!hit.collider.transform.IsChildOf(transform))
+                if (!hit.collider.transform.IsChildOf(origin))
                 {
                     bool skip = false;
-                    foreach (GameObject ignoring in toIgnore)
+                    if(toIgnore != null)
                     {
-                        if (hit.collider.transform.IsChildOf(ignoring.transform))
+                        foreach (GameObject ignoring in toIgnore)
                         {
-                            skip = true;
+                            if (hit.collider.transform.IsChildOf(ignoring.transform))
+                            {
+                                skip = true;
+                            }
                         }
                     }
                     if (!skip)
                     {
-                        if (hit.collider.gameObject == target || targetTags.Contains(hit.collider.tag))
+                        if (hit.collider.gameObject == target || (targetTags != null && targetTags.Contains(hit.collider.tag)))
                         {
                             return true;
                         }
                         else
                         {
-                            if (debug)
-                            {
-                                Debug.Log(hit.collider.gameObject);
-                            }
+                            //if (debug)
+                            //{
+                            //    Debug.Log(hit.collider.gameObject);
+                            //}
                             return false;
                         }
                     }

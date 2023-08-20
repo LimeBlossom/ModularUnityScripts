@@ -9,9 +9,19 @@ public class PlaySound : MonoBehaviour, IActivatable
     [SerializeField] private AudioMixerGroup mixer;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private bool playSingleRandom = false;
+    [SerializeField] private MinMaxFloat pitchRange;
+    [SerializeField] private float volume = 1;
 
     public void Activate()
     {
+        if(pitchRange.max == 0)
+        {
+            pitchRange.min = 1;
+            pitchRange.max = 1;
+        }
+
+        float pitch = Random.Range(pitchRange.min, pitchRange.max);
+
         if(audioManager == null)
         {
             audioManager = FindObjectOfType<AudioManager>();
@@ -19,13 +29,13 @@ public class PlaySound : MonoBehaviour, IActivatable
 
         if(playSingleRandom)
         {
-            audioManager.PlayClip(sounds[Random.Range(0, sounds.Length)], transform.position, mixer);
+            audioManager.PlayClip(sounds[Random.Range(0, sounds.Length)], transform.position, pitch, volume, mixer);
         }
         else
         {
             foreach (AudioClip sound in sounds)
             {
-                audioManager.PlayClip(sound, transform.position, mixer);
+                audioManager.PlayClip(sound, transform.position, pitch, volume, mixer);
             }
         }
     }

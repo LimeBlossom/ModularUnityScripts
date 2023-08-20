@@ -7,12 +7,6 @@ public class ConstantMove : MonoBehaviour {
     public Vector3 direction;
     public Vector3 rotation;
     public bool scaleByTime = true;
-    private TimeTracker timeTracker;
-
-    void Start()
-    {
-        timeTracker = FindObjectOfType<TimeTracker>();
-    }
 
 
     void Update()
@@ -21,8 +15,8 @@ public class ConstantMove : MonoBehaviour {
         Vector3 toRotate = rotation;
         if (scaleByTime)
         {
-            toTranslate *= timeTracker.slowTimeScale;
-            toRotate *= timeTracker.slowTimeScale;
+            toTranslate *= Time.timeScale;
+            toRotate *= Time.timeScale;
         }
         transform.Translate(toTranslate);
         transform.Rotate(toRotate);

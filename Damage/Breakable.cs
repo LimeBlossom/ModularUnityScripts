@@ -16,24 +16,17 @@ public class Breakable : MonoBehaviour, IBreakable
     public float moveBrokenYUp = 0;
     public UnityEvent events;
     [SerializeField] private bool broken;
+    [SerializeField] private bool canBreakMultipleTimes = false;
 
     [SerializeField] private bool debug;
 
-    private void Start()
-    {
-        if (toBreak == null)
-        {
-            toBreak = gameObject;
-        }
-    }
-
     public bool Break(damageTypes damageType)
     {
-        if(broken)
+        if (broken && !canBreakMultipleTimes)
         {
             return true;
         }
-        if(CanBreakFrom(damageType))
+        if (CanBreakFrom(damageType))
         {
             broken = true;
             if (debug)
@@ -43,25 +36,27 @@ public class Breakable : MonoBehaviour, IBreakable
             ActivateEvents();
             if (soundEffectOnBreak)
             {
-                FindObjectOfType<AudioManager>().PlayClip(soundEffectOnBreak, transform.position, mixer);
+                FindObjectOfType<AudioManager>().PlayClip(soundEffectOnBreak, transform.position, 1, 1, mixer);
             }
-            GetComponent<Collider>().enabled = false;
-            GameObject brokenObj = Instantiate(
-                replaceOnBreak, transform.position + Vector3.up * moveBrokenYUp, transform.rotation);
-            if(GetComponent<Rigidbody>() && brokenObj.GetComponent<Rigidbody>())
+            //GetComponent<Collider>().enabled = false;
+            if(replaceOnBreak != null)
             {
-                brokenObj.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
+                GameObject brokenObj = Instantiate(
+                    replaceOnBreak, transform.position + Vector3.up * moveBrokenYUp, transform.rotation);
+                if (GetComponent<Rigidbody>() && brokenObj.GetComponent<Rigidbody>())
+                {
+                    brokenObj.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;
+                }
             }
             // Debug.Log(toBreak.name + " destroyed by " + damageType.ToString());
-            if(toBreak == null)
+            //foreach(Transform t in toBreak.GetComponentsInChildren<Transform>())
+            //{
+            //    t.gameObject.layer = LayerMask.NameToLayer("Rubble");
+            //}
+            if(toBreak != null)
             {
-                toBreak = gameObject;
+                Destroy(toBreak);
             }
-            foreach(Transform t in toBreak.GetComponentsInChildren<Transform>())
-            {
-                t.gameObject.layer = LayerMask.NameToLayer("Rubble");
-            }
-            Destroy(toBreak);
             return true;
         }
         return false;
