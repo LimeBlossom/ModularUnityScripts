@@ -14,6 +14,8 @@ public class IfRaycastObject : MonoBehaviour, IActivatable, IGettableGameObject
     [SerializeField] private List<GameObject> targets;
     [SerializeField] private string[] targetTags;
 
+    [SerializeField] private float maxDistance;
+
     [SerializeField] private bool onUpdate = false;
 
     [SerializeField] private UnityEvent events;
@@ -55,7 +57,7 @@ public class IfRaycastObject : MonoBehaviour, IActivatable, IGettableGameObject
 
         foreach (GameObject target in targets)
         {
-            if (RaycastCanHit(target, origin, toIgnore, targetTags))
+            if (RaycastCanHit(target, origin, toIgnore, targetTags, maxDistance))
             {
                 float dist = Vector3.Distance(origin.position, target.transform.position);
                 if (dist < smallestDistance)
@@ -70,7 +72,7 @@ public class IfRaycastObject : MonoBehaviour, IActivatable, IGettableGameObject
         {
             foreach (GameObject target in GameObject.FindGameObjectsWithTag(tag))
             {
-                if (RaycastCanHit(target, origin, toIgnore, targetTags))
+                if (RaycastCanHit(target, origin, toIgnore, targetTags, maxDistance))
                 {
                     float dist = Vector3.Distance(origin.position, target.transform.position);
                     if (dist < smallestDistance)
@@ -89,7 +91,7 @@ public class IfRaycastObject : MonoBehaviour, IActivatable, IGettableGameObject
         }
     }
 
-    static public bool RaycastCanHit(GameObject target, Transform origin, GameObject[] toIgnore = null, string[] targetTags = null)
+    static public bool RaycastCanHit(GameObject target, Transform origin, GameObject[] toIgnore = null, string[] targetTags = null, float distance = 300)
     {
         Vector3 pos = origin.position;
         Vector3 dir = (target.transform.position - pos).normalized;
@@ -100,7 +102,7 @@ public class IfRaycastObject : MonoBehaviour, IActivatable, IGettableGameObject
         //}
 
 
-        RaycastHit[] hits = Physics.RaycastAll(origin.position, dir * 300).OrderBy(h => h.distance).ToArray();
+        RaycastHit[] hits = Physics.RaycastAll(origin.position, dir * distance).OrderBy(h => h.distance).ToArray();
         //if(debug)
         //{
         //    foreach(RaycastHit hit in hits)

@@ -8,8 +8,8 @@ public struct MinMaxFloat { public float min; public float max; }
 [System.Serializable]
 public struct MinMaxInt { public int min; public int max; }
 public enum CardinalDirection { North, East, South, West }
+public enum Direction { Up, Down, Left, Right, Forward, Backward }
 
-// VECTOR3
 
 public class Vector3Variable : ScriptableObject
 {

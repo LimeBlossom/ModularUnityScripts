@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LookAt : MonoBehaviour, IActivatable
+public class LookAt : MonoBehaviour, IActivatable, ISettableGameObject
 {
     [SerializeField] private Transform target;
     [SerializeField] private string tagToTarget;
@@ -35,5 +35,10 @@ public class LookAt : MonoBehaviour, IActivatable
         {
             looker.LookAt(target);
         }
+    }
+
+    public void SetGameObject(GameObject setTo)
+    {
+        target = setTo.transform;
     }
 }

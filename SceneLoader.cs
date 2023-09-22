@@ -13,6 +13,7 @@ public class SceneLoader : MonoBehaviour, IActivatable
     public MinMaxFloat loadAfterTime;
 
     [SerializeField] private bool loadNextScene;
+    [SerializeField] private bool loadPrevScene;
 
     private float loadTime = 0;
 
@@ -57,6 +58,18 @@ public class SceneLoader : MonoBehaviour, IActivatable
             else
             {
                 SceneManager.LoadScene(curIndex + 1);
+            }
+        }
+        else if (loadPrevScene)
+        {
+            int curIndex = SceneManager.GetActiveScene().buildIndex;
+            if (curIndex == 0)
+            {
+                SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
+            }
+            else
+            {
+                SceneManager.LoadScene(curIndex - 1);
             }
         }
         else if(sceneNumber != -1)

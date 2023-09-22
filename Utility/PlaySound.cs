@@ -35,7 +35,10 @@ public class PlaySound : MonoBehaviour, IActivatable
         {
             foreach (AudioClip sound in sounds)
             {
-                audioManager.PlayClip(sound, transform.position, pitch, volume, mixer);
+                if(audioManager)
+                {
+                    audioManager.PlayClip(sound, transform.position, pitch, volume, mixer);
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ public class MapStringify : MonoBehaviour
 {
     [SerializeField] private GameObject map;
     [SerializeField] private TextAsset mapFile;
+    [SerializeField] private StringVariable mapSO;
     [SerializeField] private GameObject[] prefabs;
 
     private void Start()
@@ -24,20 +25,41 @@ public class MapStringify : MonoBehaviour
 #endif
     }
 
+    public void SaveToStringReference()
+    {
+        mapSO.value = StringifyObjects();
+    }
+
     public void InstantiateObjectsFromFile()
     {
         InstantiateObjectsFromString(mapFile.text);
     }
 
+    public void InstantiateObjectsFromSO()
+    {
+        InstantiateObjectsFromString(mapSO.value);
+    }
+
     public void InstantiateObjectsFromString(string mapText)
     {
+        if(mapText != "")
+        {
+            while(map.transform.childCount > 0)
+            {
+                DestroyImmediate(map.transform.GetChild(0).gameObject);
+            }
+        }
         string[] mapChunks = mapText.Split('/');
         foreach (string chunk in mapChunks)
         {
             try
             {
-                GameObject spawned = Instantiate(ReadMapChunk(chunk));
-                spawned.transform.SetParent(map.transform);
+                GameObject toSpawn = ReadMapChunk(chunk);
+                if(toSpawn != null)
+                {
+                    GameObject spawned = Instantiate(toSpawn);
+                    spawned.transform.SetParent(map.transform);
+                }
             }
             catch
             {
@@ -82,6 +104,7 @@ public class MapStringify : MonoBehaviour
         if(parenthPos >= 0)
         {
             name = name.Substring(0, parenthPos);
+            name = name.Replace(" ", "");
         }
         return name;
     }
@@ -130,7 +153,7 @@ public class MapStringify : MonoBehaviour
         }
         else
         {
-            Debug.LogError("MapStringify::ReadMapChunk could not find a prefab named " + mapChunk.Substring(i));
+            //Debug.Log("MapStringify::ReadMapChunk could not find a prefab named " + mapChunk.Substring(i));
         }
 
         return toSpawn;
