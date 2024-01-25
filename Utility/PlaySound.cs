@@ -10,6 +10,7 @@ public class PlaySound : MonoBehaviour, IActivatable
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private bool playSingleRandom = false;
     [SerializeField] private MinMaxFloat pitchRange;
+    [SerializeField] private int[] semitones = { 0 };
     [SerializeField] private float volume = 1;
 
     public void Activate()
@@ -21,6 +22,8 @@ public class PlaySound : MonoBehaviour, IActivatable
         }
 
         float pitch = Random.Range(pitchRange.min, pitchRange.max);
+        int semitone = Random.Range(0, semitones.Length);
+        pitch *= Mathf.Pow(1.059463f, semitones[semitone]);
 
         if(audioManager == null)
         {

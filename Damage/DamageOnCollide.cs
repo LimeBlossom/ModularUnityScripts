@@ -9,6 +9,7 @@ public class DamageOnCollide : MonoBehaviour
     public float radius;
     public float radiusOffset;
     public float velocityRequired;
+    [SerializeField] private Direction[] invalidDirections;
     [SerializeField] private float curVelocity;
     [SerializeField] private float lastFrameVelocity;
 
@@ -31,37 +32,38 @@ public class DamageOnCollide : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    void FixedUpdate()
-    {
-        curVelocity = rb.velocity.magnitude;
-        // If we're moving fast enough
-        if (curVelocity >= velocityRequired || timeActive < 0.01f)
-        {
-            int layer = 1 << LayerMask.NameToLayer("Default");
-            RaycastHit[] hits = Physics.RaycastAll(
-                transform.position,
-                rb.velocity);
+    //void FixedUpdate()
+    //{
+    //    return;
+    //    curVelocity = rb.velocity.magnitude;
+    //    // If we're moving fast enough
+    //    if (curVelocity >= velocityRequired || timeActive < 0.01f)
+    //    {
+    //        int layer = 1 << LayerMask.NameToLayer("Default");
+    //        RaycastHit[] hits = Physics.RaycastAll(
+    //            transform.position,
+    //            transform.forward * radius);
 
-            foreach (RaycastHit hit in hits)
-            {
-                if(hit.collider.isTrigger)
-                {
-                    continue;
-                }
-                if (hit.distance < radius + radiusOffset)
-                {
-                    if (debug)
-                    {
-                        Debug.Log($"isActive:{isActive}, timeActive:{timeActive}, velocity:{rb.velocity.magnitude}");
-                    }
-                    // If we've hit something breakable
-                    BreakHit(hit.transform, true);
-                }
-            }
-        }
-        timeActive += Time.deltaTime;
-        lastFrameVelocity = rb.velocity.magnitude;
-    }
+    //        foreach (RaycastHit hit in hits)
+    //        {
+    //            if(hit.collider.isTrigger)
+    //            {
+    //                continue;
+    //            }
+    //            if (hit.distance < radius + radiusOffset)
+    //            {
+    //                if (debug)
+    //                {
+    //                    Debug.Log($"isActive:{isActive}, timeActive:{timeActive}, velocity:{rb.velocity.magnitude}");
+    //                }
+    //                // If we've hit something breakable
+    //                BreakHit(hit.transform, true);
+    //            }
+    //        }
+    //    }
+    //    timeActive += Time.deltaTime;
+    //    lastFrameVelocity = rb.velocity.magnitude;
+    //}
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -71,6 +73,15 @@ public class DamageOnCollide : MonoBehaviour
         }
         if (isActive)
         {
+            //foreach(Direction dir in invalidDirections)
+            //{
+            //    Physics.Raycast(transform.position, VariableTypes.GetDirection(transform, dir), out RaycastHit hit);
+            //    if(hit.collider.gameObject == collision.gameObject)
+            //    {
+            //        return;
+            //    }
+            //}
+
             // If we're moving fast enough
             if (rb.velocity.magnitude >= velocityRequired || lastFrameVelocity >= velocityRequired || timeActive < 0.01f)
             {

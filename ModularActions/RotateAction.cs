@@ -26,6 +26,11 @@ public class RotateAction : MonoBehaviour, IActivatable
         }
     }
 
+    public void RotateActionActivate()
+    {
+        Activate();
+    }
+
     public void Activate()
     {
         activated = true;

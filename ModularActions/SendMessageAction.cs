@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class SendMessageAction : MonoBehaviour, IActivatable
 {
-    [SerializeField] private GameObject target;
-    [SerializeField] private string functionName;
+    [SerializeField] private GameObject[] targets;
+    [SerializeField] private StringReference functionName;
     [SerializeField] private object toSend;
 
     public void Activate()
     {
-        if(target != null)
+        foreach(GameObject target in targets)
         {
             if (toSend != null)
             {
-                target.SendMessage(functionName, toSend);
+                target.SendMessage(functionName.value, toSend);
             }
             else
             {
-                target.SendMessage(functionName);
+                target.SendMessage(functionName.value);
             }
         }
     }

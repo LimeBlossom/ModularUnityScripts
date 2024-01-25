@@ -32,7 +32,7 @@ public class IfRaycastDirection : MonoBehaviour, IActivatable
     {
         if(onUpdate)
         {
-            if(CheckForHits() == ifNot)
+            if(CheckForHits() == false && ifNot)
             {
                 ActivateActions(null);
             }
@@ -46,19 +46,46 @@ public class IfRaycastDirection : MonoBehaviour, IActivatable
 
         foreach(Direction dir in directions)
         {
-            RaycastHit[] hits = Physics.RaycastAll(origin.position, GetDirection(dir), maxDistance).OrderBy(h => h.distance).ToArray();
+            int EVERYTHINGLAYERMASK = ~0;
+
+            if(origin == null)
+            {
+                return false;
+            }
+            RaycastHit[] hits = Physics.RaycastAll(origin.position, VariableTypes.GetDirection(origin, dir), maxDistance, EVERYTHINGLAYERMASK, QueryTriggerInteraction.Ignore).OrderBy(h => h.distance).ToArray();
+            if(debug)
+                Debug.DrawRay(origin.position, VariableTypes.GetDirection(origin, dir) * maxDistance, Color.red);
+
             foreach (RaycastHit hit in hits)
             {
-                if (debug)
-                {
-                    print($"CheckForHits hit {hit.collider.name}, which has tag {hit.collider.tag}");
-                }
                 if (hit.collider.gameObject == origin.gameObject)
                 {
                     continue;
                 }
                 if (targetTags.Contains(hit.collider.tag))
                 {
+                    if (debug)
+                    {
+                        print($"CheckForHits hit {hit.collider.name}, which has tag {hit.collider.tag}");
+                    }
+
+                    // Sanity Check
+                    /* You would not believe why we have to do this. Insane bug!
+                     * Somehow the raycast is finding hits that are not in the direction that it is pointing! */
+                    Vector3 directionToHit = (hit.transform.position - origin.position).normalized;
+                    Vector3 rayDirection = VariableTypes.GetDirection(origin, dir).normalized;
+                    
+                    if(Vector3.Dot(rayDirection, directionToHit) < 1)
+                    {
+                        continue;
+                    }
+                    if(Vector3.Distance(origin.position, hit.transform.position) > maxDistance)
+                    {
+                        continue;
+                    }
+                    // End Sanity Check
+
+
                     float dist = Vector3.Distance(origin.position, hit.transform.position);
                     if (dist < smallestDistance)
                     {
@@ -66,7 +93,7 @@ public class IfRaycastDirection : MonoBehaviour, IActivatable
                         nearestGO = hit.collider.gameObject;
                     }
                 }
-                else
+                else // If vision is blocked, don't turn
                 {
                     break;
                 }
@@ -82,35 +109,6 @@ public class IfRaycastDirection : MonoBehaviour, IActivatable
         {
             return false;
         }
-    }
-
-    private Vector3 GetDirection(Direction direction)
-    {
-        Vector3 dir = Vector3.zero;
-        switch(direction)
-        {
-            case Direction.Up:
-                dir = origin.up;
-                break;
-            case Direction.Down:
-                dir = -origin.up;
-                break;
-            case Direction.Right:
-                dir = origin.right;
-                break;
-            case Direction.Left:
-                dir = -origin.right;
-                break;
-            case Direction.Forward:
-                dir = origin.forward;
-                break;
-            case Direction.Backward:
-                dir = -origin.forward;
-                break;
-            default:
-                break;
-        }
-        return dir;
     }
 
     public void Activate()

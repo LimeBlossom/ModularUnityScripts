@@ -49,6 +49,10 @@ public class IfDistance : MonoBehaviour, IActivatable, ISettableGameObject
 
     private void GetObjects()
     {
+        if (debug)
+        {
+            Debug.Log(gameObject.name + " GetObjects()");
+        }
         if (fixedObject == null)
         {
             if(fixedObjectTag != "")
@@ -58,7 +62,7 @@ public class IfDistance : MonoBehaviour, IActivatable, ISettableGameObject
         }
         if (settableObject == null)
         {
-            if(settableObjectTag != "")
+            if (settableObjectTag != "")
             {
                 settableObject = GameObject.FindGameObjectWithTag(settableObjectTag);
             }

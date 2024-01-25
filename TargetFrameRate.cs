@@ -20,6 +20,8 @@ public class TargetFrameRate : MonoBehaviour
     void Awake()
     {
         Application.targetFrameRate = target;
+        // Turn off v-sync
+        QualitySettings.vSyncCount = 0;
     }
 
     private void Update()

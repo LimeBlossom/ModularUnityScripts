@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewStringVar", menuName = "CustomSO/Types/StringVaraible")]
+[CreateAssetMenu(fileName = "NewStringVar", menuName = "CustomSO/Types/StringVariable")]
 public class StringVariable : ScriptableObject
 {
     public string value;

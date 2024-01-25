@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "NewIntVar", menuName = "CustomSO/Types/IntVaraible")]
+[CreateAssetMenu(fileName = "NewIntVar", menuName = "CustomSO/Types/IntVariable")]
 public class IntVariable : ScriptableObject
 {
     public int value;

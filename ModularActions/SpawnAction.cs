@@ -6,6 +6,7 @@ public class SpawnAction : MonoBehaviour, IActivatable
 {
     [SerializeField] private bool randomizeToSpawn = false;
     [SerializeField] private GameObject[] toSpawn;
+    [SerializeField] private GameObjectReference[] refToSpawn;
     [SerializeField] private Transform[] spawnLocation;
     [SerializeField] private Transform spawnRotation;
     [SerializeField] private GameObject parentTo;
@@ -16,8 +17,16 @@ public class SpawnAction : MonoBehaviour, IActivatable
         GameObject spawned = null;
         if(randomizeToSpawn)
         {
-            spawned = Instantiate(toSpawn[Random.Range(0, toSpawn.Length)]);
-            AdjustSpawned(spawned);
+            if(toSpawn.Length > 0)
+            {
+                spawned = Instantiate(toSpawn[Random.Range(0, toSpawn.Length)]);
+                AdjustSpawned(spawned);
+            }
+            if (refToSpawn.Length > 0)
+            {
+                spawned = Instantiate(refToSpawn[Random.Range(0, refToSpawn.Length)].value);
+                AdjustSpawned(spawned);
+            }
         }
         else
         {
@@ -25,6 +34,14 @@ public class SpawnAction : MonoBehaviour, IActivatable
             {
                 spawned = Instantiate(spawn);
                 AdjustSpawned(spawned);
+            }
+            foreach (GameObjectReference spawn in refToSpawn)
+            {
+                if(spawn.value != null)
+                {
+                    spawned = Instantiate(spawn.value);
+                    AdjustSpawned(spawned);
+                }
             }
         }
     }

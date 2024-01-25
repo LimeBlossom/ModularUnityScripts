@@ -9,7 +9,9 @@ public class MapStringify : MonoBehaviour
     [SerializeField] private GameObject map;
     [SerializeField] private TextAsset mapFile;
     [SerializeField] private StringVariable mapSO;
+    [SerializeField] private LevelDataRef levelSO;
     [SerializeField] private GameObject[] prefabs;
+    [SerializeField] private bool centerMap = false;
 
     private void Start()
     {
@@ -28,6 +30,22 @@ public class MapStringify : MonoBehaviour
     public void SaveToStringReference()
     {
         mapSO.value = StringifyObjects();
+    }
+
+    public void InstantiateObjects()
+    {
+        if (mapFile != null)
+        {
+            InstantiateObjectsFromString(mapFile.text);
+        }
+        else if (mapSO != null)
+        {
+            InstantiateObjectsFromString(mapSO.value);
+        }
+        else if (levelSO != null)
+        {
+            InstantiateObjectsFromString(levelSO.value.mapData.value);
+        }
     }
 
     public void InstantiateObjectsFromFile()
@@ -59,6 +77,9 @@ public class MapStringify : MonoBehaviour
                 {
                     GameObject spawned = Instantiate(toSpawn);
                     spawned.transform.SetParent(map.transform);
+
+                    if(centerMap) // TODO: This function is not complete.
+                        CenterMapTransforms(map.transform);
                 }
             }
             catch
@@ -67,6 +88,23 @@ public class MapStringify : MonoBehaviour
                 Debug.LogError(chunk);
             }
         }
+    }
+
+    private void CenterMapTransforms(Transform levelMap) // TODO: This function is not complete.
+    {
+        Transform[] transforms = levelMap.GetComponentsInChildren<Transform>();
+        float totalX = 0;
+        float totalZ = 0;
+        foreach (Transform child in levelMap.GetComponentsInChildren<Transform>())
+        {
+            totalX += child.position.x;
+            totalZ += child.position.z;
+        }
+        float avgX = totalX / transforms.Length;
+        float avgZ = totalZ / transforms.Length;
+        Vector3 centerPoint = new Vector3(avgX, 0, avgZ);
+
+        levelMap.transform.position = new Vector3(centerPoint.x, 0, centerPoint.z);
     }
 
     public string StringifyObjects()
@@ -86,11 +124,11 @@ public class MapStringify : MonoBehaviour
             toWrite += Mathf.RoundToInt(Mathf.Abs(child.transform.position.z)).ToString("D3");
             toWrite += child.transform.position.z >= 0 ? "p" : "n";
             toWrite += Mathf.RoundToInt(Mathf.Abs(child.transform.eulerAngles.x)).ToString("D3");
-            toWrite += child.transform.rotation.x >= 0 ? "p" : "n";
+            toWrite += child.transform.eulerAngles.x >= 0 ? "p" : "n";
             toWrite += Mathf.RoundToInt(Mathf.Abs(child.transform.eulerAngles.y)).ToString("D3");
-            toWrite += child.transform.rotation.y >= 0 ? "p" : "n";
+            toWrite += child.transform.eulerAngles.y >= 0 ? "p" : "n";
             toWrite += Mathf.RoundToInt(Mathf.Abs(child.transform.eulerAngles.z)).ToString("D3");
-            toWrite += child.transform.rotation.z >= 0 ? "p" : "n";
+            toWrite += child.transform.eulerAngles.z >= 0 ? "p" : "n";
             toWrite += ParseObjectName(child.name);
             toWrite += "/";
         }
@@ -145,7 +183,7 @@ public class MapStringify : MonoBehaviour
         i += 4;
 
         GameObject toSpawn = FindSpawnableByName(mapChunk.Substring(i));
-        Debug.Log(mapChunk.Substring(i));
+        //Debug.Log(mapChunk.Substring(i));
         if(toSpawn != null)
         {
             toSpawn.transform.position = spawnPosition;
@@ -193,7 +231,7 @@ public class MapStringifyEditor : Editor
         MapStringify mapStringify = (MapStringify)target;
         if (GUILayout.Button("Spawn Level"))
         {
-            mapStringify.InstantiateObjectsFromFile();
+            mapStringify.InstantiateObjects();
         }
         if (GUILayout.Button("Save To File"))
         {

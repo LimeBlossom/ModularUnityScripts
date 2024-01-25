@@ -10,6 +10,11 @@ public class DestroyObject : MonoBehaviour, ISettableGameObject, IActivatable
         Destroy(toDestroy);
     }
 
+    public void DestroyObjectActivate()
+    {
+        Activate();
+    }
+
     public void SetGameObject(GameObject setTo)
     {
         toDestroy = setTo;
