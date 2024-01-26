@@ -43,4 +43,8 @@ public class PointAtObject : MonoBehaviour, IActivatable, ISettableGameObject
     {
         target = setTo;
     }
+    public void SetGameObject(GameObject[] setTo)
+    {
+        target = setTo[0];
+    }
 }

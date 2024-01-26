@@ -9,12 +9,14 @@ public class OnTimer : MonoBehaviour, IActivatable
     [SerializeField] private bool onlyRunOnce = false;
     [SerializeField] private bool alwaysRandomizerTimer;
     [SerializeField] private MinMaxFloat activateAfterTime;
+    [SerializeField] private int maxRuns = int.MaxValue;
+    private int runs;
+        
     [SerializeField] private UnityEvent events;
     [SerializeField] private MonoBehaviour[] actions;
     [SerializeField] private bool unscaledTime = false;
 
-    [SerializeField] private float timer;
-    [SerializeField] private bool ranOnce = false;
+    [SerializeField] private float timer = 10;
 
     void Awake()
     {
@@ -27,11 +29,17 @@ public class OnTimer : MonoBehaviour, IActivatable
 
     public void Activate()
     {
-        if(onlyRunOnce && ranOnce)
+        if(onlyRunOnce && runs > 0)
         {
             return;
         }
-        ranOnce = true;
+        if(maxRuns < int.MaxValue && runs > maxRuns)
+        {
+            return;
+        }
+
+        runs++;
+
         if(alwaysRandomizerTimer)
         {
             timer = Random.Range(activateAfterTime.min, activateAfterTime.max);

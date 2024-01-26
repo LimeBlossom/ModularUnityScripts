@@ -4,21 +4,27 @@ using UnityEngine;
 
 public class WobbleAlpha : MonoBehaviour
 {
-    public SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private MeshRenderer meshRenderer;
 
-    public Color color;
-    public HSBColor hsbColor;
+    [SerializeField] private Color color;
+    [SerializeField] private HSBColor hsbColor;
 
-    public float wobbleFrequency = 1;
-    public float wobbleOffset = 0;
-    public float minAlpha = 0;
-    public float maxAlpha = 1;
+    [SerializeField] private MinMaxFloat wobbleFrequencyBounds;
+    [SerializeField] private MinMaxFloat wobbleOffsetBounds;
+    [SerializeField] private float minAlpha = 0;
+    [SerializeField] private float maxAlpha = 1;
+
+    private float wobbleFrequency;
+    private float wobbleOffset;
 
     private float timeAlive = 0;
 
     void Start()
     {
         hsbColor = new HSBColor(color);
+        wobbleFrequency = wobbleFrequencyBounds.Random(-1);
+        wobbleOffset = wobbleOffsetBounds.Random(-1);
     }
 
     void Update()
@@ -29,6 +35,13 @@ public class WobbleAlpha : MonoBehaviour
 
         hsbColor.a = curWobble;
 
-        spriteRenderer.color = hsbColor.ToColor();
+        if(spriteRenderer != null)
+        {
+            spriteRenderer.color = hsbColor.ToColor();
+        }
+        if(meshRenderer != null)
+        {
+            meshRenderer.material.color = hsbColor.ToColor();
+        }
     }
 }

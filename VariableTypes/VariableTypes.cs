@@ -4,9 +4,50 @@ using UnityEngine;
 using System;
 
 [System.Serializable]
-public struct MinMaxFloat { public float min; public float max; }
+public struct MinMaxFloat {
+    public float min;
+    public float max;
+    public float Random(int seed)
+    {
+        System.Random random;
+        if (seed != -1)
+        {
+            random = new System.Random(seed);
+        }
+        else
+        {
+            random = new System.Random();
+        }
+
+        return (float)random.NextDouble() * (max - min) + min;
+    }
+}
 [System.Serializable]
 public struct MinMaxInt { public int min; public int max; }
+[System.Serializable]
+public struct MinMaxVector3 {
+    public Vector3 min;
+    public Vector3 max;
+    public Vector3 Random(int seed)
+    {
+        System.Random random;
+        if(seed != -1)
+        {
+            random = new System.Random(seed);
+        }
+        else
+        {
+            random = new System.Random();
+        }
+
+        Vector3 toReturn;
+        float nextDouble = (float)random.NextDouble();
+        toReturn.x = nextDouble * (max.x - min.x) + min.x;
+        toReturn.y = (float)random.NextDouble() * (max.y - min.y) + min.y;
+        toReturn.z = (float)random.NextDouble() * (max.z - min.z) + min.z;
+        return toReturn;
+    }
+}
 public enum CardinalDirection { North, East, South, West }
 public enum Direction { Up, Down, Left, Right, Forward, Backward }
 

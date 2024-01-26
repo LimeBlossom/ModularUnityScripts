@@ -10,7 +10,10 @@ public class OnStart : MonoBehaviour
 
     private void Start()
     {
-        events.Invoke();
+        if(events != null)
+        {
+            events.Invoke();
+        }
         if (actions.Length > 0)
         {
             foreach (IActivatable action in actions)

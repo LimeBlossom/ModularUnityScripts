@@ -38,6 +38,10 @@ public class IfDistance : MonoBehaviour, IActivatable, ISettableGameObject
     {
         settableObject = setTo;
     }
+    public void SetGameObject(GameObject[] setTo)
+    {
+        settableObject = setTo[0];
+    }
 
     private void Update()
     {

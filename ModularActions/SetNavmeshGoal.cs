@@ -31,4 +31,9 @@ public class SetNavmeshGoal : MonoBehaviour, IActivatable, ISettableGameObject
     {
         targetObject = setTo;
     }
+
+    public void SetGameObject(GameObject[] setTo)
+    {
+        targetObject = setTo[0];
+    }
 }

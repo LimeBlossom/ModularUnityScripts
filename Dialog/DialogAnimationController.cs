@@ -43,25 +43,51 @@ public class DialogAnimationController : MonoBehaviour
     {
         if(dir == Direction.LEFT)
         {
-            DestroyImmediate(studioLeft.transform.GetChild(0));
+            if(studioLeft != null &&
+                studioLeft.transform != null &&
+                studioLeft.transform.childCount > 0 &&
+                studioLeft.transform.GetChild(0) != null)
+            {
+                DestroyImmediate(studioLeft.transform.GetChild(0).gameObject);
+            }
         }
         if (dir == Direction.RIGHT)
         {
-            DestroyImmediate(studioRight.transform.GetChild(0));
+            if (studioRight != null &&
+                studioRight.transform != null &&
+                studioLeft.transform.childCount > 0 &&
+                studioRight.transform.GetChild(0) != null)
+            {
+                DestroyImmediate(studioRight.transform.GetChild(0).gameObject);
+            }
         }
     }
 
-    public void AnimateCharacter(string animation, Direction dir)
+    public void AnimateCharacter(string animation, Direction dir, bool crossFade = true)
     {
         if(dir == Direction.LEFT)
         {
-            studioLeft.transform.GetChild(0).GetComponentInChildren<Animator>().
-                CrossFadeInFixedTime(animation, 1f);
+            if(crossFade)
+            {
+                studioLeft.transform.GetChild(0).GetComponentInChildren<Animator>().
+                    CrossFadeInFixedTime(animation, 1f);
+            }
+            else
+            {
+                studioLeft.transform.GetChild(0).GetComponentInChildren<Animator>().Play(animation);
+            }
         }
         if(dir == Direction.RIGHT)
         {
-            studioRight.transform.GetChild(0).GetComponentInChildren<Animator>().
-                CrossFadeInFixedTime(animation, 1f);
+            if (crossFade)
+            {
+                studioRight.transform.GetChild(0).GetComponentInChildren<Animator>().
+                    CrossFadeInFixedTime(animation, 1f);
+            }
+            else
+            {
+                studioRight.transform.GetChild(0).GetComponentInChildren<Animator>().Play(animation);
+            }
         }
     }
 }

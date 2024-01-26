@@ -34,18 +34,20 @@ public class MenuButtonSelector : MonoBehaviour, IActivatable
         Activate();
     }
 
-    void OnMove()
+    void Update()
     {
         if (EventSystem.current.currentSelectedGameObject == null || !EventSystem.current.currentSelectedGameObject.activeInHierarchy)
         {
-            print("Error: No button selected. Selecting default.");
             defaultSelection.Select();
             defaultSelection.OnSelect(null);
         }
         else
         {
-            EventSystem.current.currentSelectedGameObject.GetComponent<Button>().Select();
-            EventSystem.current.currentSelectedGameObject.GetComponent<Button>().OnSelect(null);
+            if(EventSystem.current.currentSelectedGameObject.GetComponent<Button>() != null)
+            {
+                EventSystem.current.currentSelectedGameObject.GetComponent<Button>().Select();
+                EventSystem.current.currentSelectedGameObject.GetComponent<Button>().OnSelect(null);
+            }
         }
     }
 

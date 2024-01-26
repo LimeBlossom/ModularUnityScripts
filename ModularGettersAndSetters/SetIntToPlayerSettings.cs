@@ -11,6 +11,6 @@ public class SetIntToPlayerSettings : MonoBehaviour, IActivatable
 
     public void Activate()
     {
-        PlayerPrefs.SetInt(intName, intVariable.value);
+        JSONPlayerPrefs.Instance.SetInt(intName, intVariable.value);
     }
 }

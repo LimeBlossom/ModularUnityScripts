@@ -235,7 +235,7 @@ public class OnTriggerModular: MonoBehaviour
         }
     }
 
-    private void Activate(GameObject go)
+    public void Activate(GameObject go)
     {
         if (setGameObject != null && setGameObject.Length > 0)
         {

@@ -15,6 +15,6 @@ public class PlayerPrefsOperator : MonoBehaviour
 
     public void SaveStringToPlayerPrefs(string key, string value)
     {
-        PlayerPrefs.SetString(key, value);
+        JSONPlayerPrefs.Instance.SetString(key, value);
     }
 }

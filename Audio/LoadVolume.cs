@@ -12,7 +12,7 @@ public class LoadVolume : MonoBehaviour
 
     void Start()
     {
-        float volume = PlayerPrefs.GetFloat(mixer.name + paramName, 0.5f);
+        float volume = JSONPlayerPrefs.Instance.GetFloat(mixer.name + paramName, 0.5f);
         if(slider)
         {
             slider.value = volume;

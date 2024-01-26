@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+<<<<<<< Updated upstream
 using TMPro;
+=======
+>>>>>>> Stashed changes
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -9,22 +12,29 @@ public class SetTextToIntVariable : MonoBehaviour, IActivatable
 {
     [SerializeField] private bool onUpdate;
     [SerializeField] private Text toChange;
-    [SerializeField] private TextMeshProUGUI tmpToChange;
-    [SerializeField] private IntVariable value;
+	[SerializeField] private IntVariable value;
+    [SerializeField] private StringReference preValue;
+    [SerializeField] private StringReference postValue;
+	[SerializeField] private TextMeshProUGUI tmpToChange;
 
     public void Activate()
     {
         if (toChange != null)
         {
-            toChange.text = value.value.ToString();
+            toChange.text =
+				preValue.value +
+				value.value.ToString() +
+				postValue.value;
         }
         if (tmpToChange != null)
         {
-            tmpToChange.text = value.value.ToString();
+            tmpToChange.text =
+				preValue.value +
+				value.value.ToString() +
+				postValue.value;
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (onUpdate)

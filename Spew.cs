@@ -6,6 +6,7 @@ using UnityEngine;
 public class Spew : MonoBehaviour
 {
     public int seed = -1;
+    [SerializeField] private StringReference seedString;
 
     public bool alwaysOn;
     public bool onAwake = false;
@@ -33,6 +34,7 @@ public class Spew : MonoBehaviour
     [System.Serializable]
     public struct LocalPositionRange { public Vector3 min; public Vector3 max; }
     public LocalPositionRange m_localPositionRange;
+    [SerializeField] private bool posRoundToInt = false;
 
     void OnEnable()
     {
@@ -55,6 +57,10 @@ public class Spew : MonoBehaviour
         if(seed != -1)
         {
             random = new System.Random(seed);
+        }
+        else if(seedString.value != null && seedString.value != "")
+        {
+            random = new System.Random(seedString.value.GetHashCode());
         }
         else
         {
@@ -133,9 +139,10 @@ public class Spew : MonoBehaviour
 
     private void DoSpew()
     {
+        GameObject spewed;
         if (attachToParent)
         {
-            GameObject spewed = Instantiate(toSpew[random.Next(0, toSpew.Length)], this.transform) as GameObject;
+            spewed = Instantiate(toSpew[random.Next(0, toSpew.Length)], this.transform);
             spewed.transform.position = new Vector3(
                 transform.position.x + (float)random.NextDouble() * (m_localPositionRange.max.x - m_localPositionRange.min.x) + m_localPositionRange.min.x, //(m_localPositionRange.min.x, m_localPositionRange.max.x),
                 transform.position.y + (float)random.NextDouble() * (m_localPositionRange.max.y - m_localPositionRange.min.y) + m_localPositionRange.min.y, // random.Next(m_localPositionRange.min.y, m_localPositionRange.max.y),
@@ -143,7 +150,7 @@ public class Spew : MonoBehaviour
         }
         else if (attachToObject != null)
         {
-            GameObject spewed = Instantiate(toSpew[random.Next(0, toSpew.Length)], attachToObject.transform) as GameObject;
+            spewed = Instantiate(toSpew[random.Next(0, toSpew.Length)], attachToObject.transform);
             spewed.transform.position = new Vector3(
                 transform.position.x + (float)random.NextDouble() * (m_localPositionRange.max.x - m_localPositionRange.min.x) + m_localPositionRange.min.x, //(m_localpositionrange.min.x, m_localpositionrange.max.x),
                 transform.position.y + (float)random.NextDouble() * (m_localPositionRange.max.y - m_localPositionRange.min.y) + m_localPositionRange.min.y, // random.next(m_localpositionrange.min.y, m_localpositionrange.max.y),
@@ -151,12 +158,20 @@ public class Spew : MonoBehaviour
         }
         else
         {
-            GameObject spewed = Instantiate(toSpew[random.Next(0, toSpew.Length)]) as GameObject;
+            spewed = Instantiate(toSpew[random.Next(0, toSpew.Length)]);
             spewed.transform.rotation = transform.rotation;
             spewed.transform.position = new Vector3(
                 transform.position.x + (float)random.NextDouble() * (m_localPositionRange.max.x - m_localPositionRange.min.x) + m_localPositionRange.min.x, // Random.Range(m_localPositionRange.min.x, m_localPositionRange.max.x),
                 transform.position.y + (float)random.NextDouble() * (m_localPositionRange.max.y - m_localPositionRange.min.y) + m_localPositionRange.min.y, // Random.Range(m_localPositionRange.min.y, m_localPositionRange.max.y),
                 transform.position.z + (float)random.NextDouble() * (m_localPositionRange.max.z - m_localPositionRange.min.z) + m_localPositionRange.min.z);
+        }
+
+        if(posRoundToInt)
+        {
+            spewed.transform.position = new Vector3(
+                Mathf.RoundToInt(spewed.transform.position.x),
+                Mathf.RoundToInt(spewed.transform.position.y),
+                Mathf.RoundToInt(spewed.transform.position.z));
         }
     }
 }

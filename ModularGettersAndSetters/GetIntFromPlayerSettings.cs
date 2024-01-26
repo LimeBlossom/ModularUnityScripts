@@ -11,7 +11,7 @@ public class GetIntFromPlayerSettings : MonoBehaviour, IActivatable
 
     public void Activate()
     {
-        int toPass = PlayerPrefs.GetInt(intName);
+        int toPass = JSONPlayerPrefs.Instance.GetInt(intName);
         foreach (MonoBehaviour behaviour in intSettables)
         {
             ISettableInt settable = behaviour as ISettableInt;
@@ -19,7 +19,7 @@ public class GetIntFromPlayerSettings : MonoBehaviour, IActivatable
             {
                 if(debug)
                 {
-                    Debug.Log($"{gameObject.name} set int from player settings for {behaviour.gameObject.name}");
+                    Debug.Log($"{gameObject.name} set int ({toPass}) from player settings for {behaviour.gameObject.name}");
                 }
                 settable.SetInt(toPass);
             }

@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour, IActivatable
 {
+    [SerializeField] private LevelList levelListSO;
+    [SerializeField] private UnityEvent onLastLevelEvent;
+    public bool loadMainMenu;
     public bool randomScene;
     public bool reloadThisScene;
     public int sceneNumber = -1;
@@ -50,14 +54,28 @@ public class SceneLoader : MonoBehaviour, IActivatable
     {
         if(loadNextScene)
         {
-            int curIndex = SceneManager.GetActiveScene().buildIndex;
-            if(curIndex == SceneManager.sceneCountInBuildSettings - 1)
+            if(levelListSO != null)
             {
-                SceneManager.LoadScene(0);
+                string nextLevel = levelListSO.GetNextScenePath(
+                    SceneManager.GetActiveScene());
+                if(nextLevel == levelListSO.GetMainMenu())
+                {
+                    onLastLevelEvent.Invoke();
+                }
+                SceneManager.LoadScene(nextLevel);
             }
             else
             {
-                SceneManager.LoadScene(curIndex + 1);
+                int curIndex = SceneManager.GetActiveScene().buildIndex;
+                if (curIndex == SceneManager.sceneCountInBuildSettings - 1)
+                {
+                    onLastLevelEvent.Invoke();
+                    SceneManager.LoadScene(0);
+                }
+                else
+                {
+                    SceneManager.LoadScene(curIndex + 1);
+                }
             }
         }
         else if (loadPrevScene)
@@ -87,6 +105,10 @@ public class SceneLoader : MonoBehaviour, IActivatable
         else if(reloadThisScene)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        else if(loadMainMenu)
+        {
+            SceneManager.LoadScene(levelListSO.GetMainMenu());
         }
     }
 

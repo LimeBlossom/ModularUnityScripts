@@ -11,37 +11,57 @@ struct LinePoint
 
 public class LineRendererPath : MonoBehaviour
 {
+    [SerializeField] private Transform toFollow;
     [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private float updateRate = 0.01f;
     private LinePoint[] points;
 
     // Start is called before the first frame update
     void Start()
     {
+        if(toFollow == null)
+        {
+            toFollow = transform;
+        }
         List<LinePoint> pointList = new List<LinePoint>();
         List<Vector3> positions = new List<Vector3>();
         for (int i = 0; i < lineRenderer.positionCount; i++)
         {
             LinePoint linePoint;
-            linePoint.position = transform.position;
-            linePoint.oldPosition = transform.position;
+            linePoint.position = toFollow.position;
+            linePoint.oldPosition = toFollow.position;
             pointList.Add(linePoint);
             positions.Add(linePoint.position);
         }
         points = pointList.ToArray();
         lineRenderer.SetPositions(positions.ToArray());
+        //StartCoroutine(MovePoints());
     }
 
-    private void Update()
+    IEnumerator MovePointsRoutine()
     {
-        lineRenderer.SetPosition(0, transform.position);
+        while(true)
+        {
+            yield return new WaitForSecondsRealtime(updateRate);
+            List<Vector3> positions = new List<Vector3>();
+            points[0].oldPosition = points[0].position;
+            points[0].position = toFollow.position;
+            positions.Add(points[0].position);
+            for (int i = 1; i < lineRenderer.positionCount; i++)
+            {
+                points[i].oldPosition = points[i].position;
+                points[i].position = points[i - 1].oldPosition;
+                positions.Add(points[i].position);
+            }
+            lineRenderer.SetPositions(positions.ToArray());
+        }
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void MovePoints()
     {
         List<Vector3> positions = new List<Vector3>();
         points[0].oldPosition = points[0].position;
-        points[0].position = transform.position;
+        points[0].position = toFollow.position;
         positions.Add(points[0].position);
         for (int i = 1; i < lineRenderer.positionCount; i++)
         {
@@ -50,5 +70,15 @@ public class LineRendererPath : MonoBehaviour
             positions.Add(points[i].position);
         }
         lineRenderer.SetPositions(positions.ToArray());
+    }
+
+    private void Update()
+    {
+        lineRenderer.SetPosition(0, toFollow.position);
+    }
+
+    private void FixedUpdate()
+    {
+        MovePoints();
     }
 }

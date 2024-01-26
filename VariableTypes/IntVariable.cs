@@ -7,6 +7,11 @@ using System;
 public class IntVariable : ScriptableObject
 {
     public int value;
+
+    public void SetValue(int newValue)
+    {
+        value = newValue;
+    }
 }
 
 [Serializable]

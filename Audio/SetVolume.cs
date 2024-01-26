@@ -11,6 +11,6 @@ public class SetVolume : MonoBehaviour
     public void SetLevel (float value)
     {
         mixer.SetFloat(paramName, Mathf.Log10(value) * 20);
-        PlayerPrefs.SetFloat(mixer.name + paramName, value);
+        JSONPlayerPrefs.Instance.SetFloat(mixer.name + paramName, value);
     }
 }

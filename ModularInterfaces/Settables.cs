@@ -15,6 +15,7 @@ public interface ISettableFloat
 public interface ISettableGameObject
 {
     void SetGameObject(GameObject setTo);
+    void SetGameObject(GameObject[] setTo);
 }
 
 public interface ISettableColor

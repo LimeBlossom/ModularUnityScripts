@@ -12,7 +12,7 @@ public class StringVariable : ScriptableObject
 public class StringReference
 {
     public bool useConstant = true;
-    public string constantValue;
+    public string constantValue = "";
     public StringVariable variable;
 
     public string value

@@ -5,18 +5,19 @@ using UnityEngine;
 public class FollowObject : MonoBehaviour
 {
     [SerializeField] private GameObject follower;
-    [SerializeField] private string toFollow;
+    [SerializeField] private GameObject toFollow;
+    [SerializeField] private string toFollowName;
     [SerializeField] private Vector3 offset;
 
     private GameObject target;
 
     private void Awake()
     {
-        target = GameObject.Find(toFollow);
+        target = toFollow;
+        if(target == null)
+            target = GameObject.Find(toFollowName);
         if (target != null)
-        {
             follower.transform.position = target.transform.position + offset;
-        }
     }
 
     private void Update()
@@ -27,7 +28,7 @@ public class FollowObject : MonoBehaviour
         }
         else
         {
-            target = GameObject.Find(toFollow);
+            target = GameObject.Find(toFollowName);
         }
     }
 }

@@ -9,6 +9,7 @@ public class Breakable : MonoBehaviour, IBreakable
 {
     public GameObject toBreak;
     public GameObject replaceOnBreak;
+    [SerializeField] private Transform replacePoint;
     public AudioClip soundEffectOnBreak;
     [SerializeField] private GameObject soundEffectPrefab;
     [SerializeField] private AudioMixerGroup mixer;
@@ -19,6 +20,19 @@ public class Breakable : MonoBehaviour, IBreakable
     [SerializeField] private bool canBreakMultipleTimes = false;
 
     [SerializeField] private bool debug;
+
+    private void Start()
+    {
+        if (toBreak == null)
+        {
+            toBreak = gameObject;
+        }
+    }
+
+    public void MarkBroken(bool value)
+    {
+        broken = value;
+    }
 
     public bool Break(damageTypes damageType)
     {
@@ -38,11 +52,17 @@ public class Breakable : MonoBehaviour, IBreakable
             {
                 FindObjectOfType<AudioManager>().PlayClip(soundEffectOnBreak, transform.position, 1, 1, mixer);
             }
-            //GetComponent<Collider>().enabled = false;
-            if(replaceOnBreak != null)
+            GetComponent<Collider>().enabled = false;
+            if(replaceOnBreak)
             {
+                if(replacePoint == null)
+                {
+                    replacePoint = transform;
+                }
+
                 GameObject brokenObj = Instantiate(
-                    replaceOnBreak, transform.position + Vector3.up * moveBrokenYUp, transform.rotation);
+                    replaceOnBreak, replacePoint.position + Vector3.up * moveBrokenYUp, replacePoint.rotation);
+
                 if (GetComponent<Rigidbody>() && brokenObj.GetComponent<Rigidbody>())
                 {
                     brokenObj.GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity;

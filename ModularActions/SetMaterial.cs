@@ -11,14 +11,12 @@ public class SetMaterial : MonoBehaviour, IActivatable
 
     public void Activate()
     {
-        //print("Activated");
         if(image != null)
         {
             image.material = material;
         }
         if(meshRenderer != null)
         {
-            //print("Setting material");
             meshRenderer.material = material;
         }
     }
