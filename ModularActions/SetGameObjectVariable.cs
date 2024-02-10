@@ -23,4 +23,9 @@ public class SetGameObjectVariable : MonoBehaviour, IActivatable, ISettableGameO
         toChangeTo.constantValue = setTo;
         toChangeTo.useConstant = true;
     }
+
+    public void SetGameObject(GameObject[] setTo)
+    {
+        SetGameObject(setTo[0]);
+    }
 }
