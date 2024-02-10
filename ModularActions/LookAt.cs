@@ -41,4 +41,9 @@ public class LookAt : MonoBehaviour, IActivatable, ISettableGameObject
     {
         target = setTo.transform;
     }
+
+    public void SetGameObject(GameObject[] setTo)
+    {
+        SetGameObject(setTo[0]);
+    }
 }

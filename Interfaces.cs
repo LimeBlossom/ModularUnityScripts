@@ -26,10 +26,7 @@ public interface IMoveable
     bool Rotate(Vector3 rotation);
     Vector2 GetDimensions();
     void SnapIntoPlace();
-    void Grab();
-    void ReleaseGrab();
     bool CanMoveDirection(Vector3 direction);
-    void SetGrabber(Grabbing toSet);
 }
 
 public interface ITorchable
