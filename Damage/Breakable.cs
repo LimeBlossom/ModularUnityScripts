@@ -50,7 +50,7 @@ public class Breakable : MonoBehaviour, IBreakable
             ActivateEvents();
             if (soundEffectOnBreak)
             {
-                FindObjectOfType<AudioManager>().PlayClip(soundEffectOnBreak, transform.position, 1, 1, mixer);
+                FindObjectOfType<AudioManager>().PlayClip(soundEffectOnBreak, transform.position, pitch:1, volume:1, spatialBlend:1, mixer);
             }
             GetComponent<Collider>().enabled = false;
             if(replaceOnBreak)
