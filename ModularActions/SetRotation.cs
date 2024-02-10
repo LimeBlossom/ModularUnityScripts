@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SetRotation : MonoBehaviour, IActivatable
 {
+    [SerializeField] private Transform toRotate;
     [SerializeField] private Vector3 rotation;
     [SerializeField] private bool global;
 
@@ -11,11 +12,11 @@ public class SetRotation : MonoBehaviour, IActivatable
     {
         if(global)
         {
-            transform.eulerAngles = rotation;
+            toRotate.eulerAngles = rotation;
         }
         else
         {
-            transform.localEulerAngles = rotation;
+            toRotate.localEulerAngles = rotation;
         }
     }
 }

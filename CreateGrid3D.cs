@@ -15,6 +15,15 @@ public class CreateGrid3D : MonoBehaviour
 
     private List<GameObject> spawnedList;
 
+    public void RespawnMap()
+    {
+        for(int i = parentTo.childCount-1; i > 0; i--)
+        {
+            Destroy(parentTo.GetChild(i).gameObject);
+        }
+        SpawnGrid();
+    }
+
     public void SpawnGrid()
     {
         spawnedList = new List<GameObject>();

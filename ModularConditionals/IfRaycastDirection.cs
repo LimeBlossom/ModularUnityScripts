@@ -10,6 +10,7 @@ public class IfRaycastDirection : MonoBehaviour, IActivatable
     [SerializeField] private List<string> targetTags;
     [SerializeField] private Direction[] directions;
     [SerializeField] private float maxDistance;
+    [SerializeField] private float width;
     [SerializeField] private bool onUpdate = false;
 
     [SerializeField] private UnityEvent events;
@@ -52,7 +53,15 @@ public class IfRaycastDirection : MonoBehaviour, IActivatable
             {
                 return false;
             }
-            RaycastHit[] hits = Physics.RaycastAll(origin.position, VariableTypes.GetDirection(origin, dir), maxDistance, EVERYTHINGLAYERMASK, QueryTriggerInteraction.Ignore).OrderBy(h => h.distance).ToArray();
+            //RaycastHit[] hits = Physics.RaycastAll(origin.position, VariableTypes.GetDirection(origin, dir), maxDistance, EVERYTHINGLAYERMASK, QueryTriggerInteraction.Ignore).OrderBy(h => h.distance).ToArray();
+            RaycastHit[] hits = Physics.BoxCastAll(
+                origin.position,
+                Vector3.one * width,
+                VariableTypes.GetDirection(origin, dir),
+                Quaternion.identity,
+                maxDistance,
+                EVERYTHINGLAYERMASK,
+                QueryTriggerInteraction.Ignore).OrderBy(h => h.distance).ToArray();
             if(debug)
                 Debug.DrawRay(origin.position, VariableTypes.GetDirection(origin, dir) * maxDistance, Color.red);
 

@@ -54,11 +54,11 @@ public class OnTimer : MonoBehaviour, IActivatable
     {
         if(unscaledTime)
         {
-            yield return new WaitForSecondsRealtime(timer);
+            yield return new WaitForSecondsRealtime(duration);
         }
         else
         {
-            yield return new WaitForSeconds(timer);
+            yield return new WaitForSeconds(duration);
         }
         ActivateActions();
         if(startTimerOnAwake)

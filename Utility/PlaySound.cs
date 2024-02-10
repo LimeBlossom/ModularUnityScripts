@@ -12,8 +12,8 @@ public class PlaySound : MonoBehaviour, IActivatable
     [SerializeField] private bool playSingleRandom = false;
     [SerializeField] private MinMaxFloat pitchRange;
     [SerializeField] private int[] semitones = { 0 };
-    [SerializeField] private float volume = 1;
     [SerializeField] private bool ignoreTimeScale = false;
+    [SerializeField] private FloatReference volume;
 
     public void Activate()
     {
@@ -38,13 +38,13 @@ public class PlaySound : MonoBehaviour, IActivatable
 
         if(playSingleRandom)
         {
-            audioManager.PlayClip(sounds[Random.Range(0, sounds.Length)], transform.position, spatialBlend, pitch, volume, mixer);
+            audioManager?.PlayClip(sounds[Random.Range(0, sounds.Length)], transform.position, spatialBlend, pitch, volume.value, mixer);
         }
         else
         {
             foreach (AudioClip sound in sounds)
             {
-                audioManager.PlayClip(sound, transform.position, spatialBlend, pitch, volume, mixer);
+                audioManager?.PlayClip(sound, transform.position, spatialBlend, pitch, volume.value, mixer);
             }
         }
     }
