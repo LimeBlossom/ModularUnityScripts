@@ -21,6 +21,10 @@ public class FlipBetweenSprites : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(sprites.Length == 0)
+        {
+            return;
+        }
         if (Time.fixedTime > flipRate + lastFlip)
         {
             spriteRenderer.sprite = sprites[spriteIndex];
