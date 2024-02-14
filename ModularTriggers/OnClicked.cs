@@ -60,6 +60,10 @@ public class OnClicked : MonoBehaviour, IClickable, IActivatable
 
     public void Click()
     {
+        if(debug)
+        {
+            print($"{name} was clicked.");
+        }
         ActivateOnClick();
     }
 }

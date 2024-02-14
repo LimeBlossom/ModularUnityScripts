@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ClickManager : MonoBehaviour
 {
+    [SerializeField] private bool debug;
+
     void Update()
     {
         List<Vector2> positions = new List<Vector2>();
@@ -31,6 +33,11 @@ public class ClickManager : MonoBehaviour
 
             foreach (RaycastHit hit in hits)
             {
+                if(debug)
+                {
+                    print($"ClickManager hit {hit.collider.name}");
+                }
+
                 if(hit.transform.GetComponent<ClickManagerIgnore>())
                 {
                     continue;
