@@ -15,6 +15,10 @@ public class OnMouseHover : MonoBehaviour
 
     private void OnMouseOver()
     {
+        if(!enabled)
+        {
+            return;
+        }
         if(debug)
         {
             print("OnMouseOver");
@@ -24,6 +28,10 @@ public class OnMouseHover : MonoBehaviour
 
     private void OnMouseExit()
     {
+        if (!enabled)
+        {
+            return;
+        }
         if (debug)
         {
             print("OnMouseExit");
