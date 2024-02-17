@@ -38,13 +38,13 @@ public class PlaySound : MonoBehaviour, IActivatable
 
         if(playSingleRandom)
         {
-            audioManager?.PlayClip(sounds[Random.Range(0, sounds.Length)], transform.position, spatialBlend, pitch, volume.value, mixer);
+            audioManager?.PlayClip(sounds[Random.Range(0, sounds.Length)], transform.position, pitch: pitch, volume: volume.value, spatialBlend: spatialBlend, mixer);
         }
         else
         {
             foreach (AudioClip sound in sounds)
             {
-                audioManager?.PlayClip(sound, transform.position, spatialBlend, pitch, volume.value, mixer);
+                audioManager?.PlayClip(sound, transform.position, pitch: pitch, volume: volume.value, spatialBlend: spatialBlend, mixer);
             }
         }
     }
