@@ -5,9 +5,10 @@ using UnityEngine;
 public enum damageTypes
 {
     falling,
-    bullet,
-    cannon,
-    bomb
+    fish,
+    penguin,
+    seal,
+    orca
 }
 
 public interface IBreakable
@@ -38,5 +39,5 @@ public interface IDrenchable
 
 public interface ISteppedOn
 {
-    void Step(GameObject stepper);
+    void GetSteppedOn(GameObject stepper);
 }

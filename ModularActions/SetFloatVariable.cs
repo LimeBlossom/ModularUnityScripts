@@ -9,6 +9,12 @@ public class SetFloatVariable : MonoBehaviour, IActivatable
 
     [SerializeField] private bool debug;
 
+    public void SetFloat(float value)
+    {
+        toChangeTo.useConstant = true;
+        toChangeTo.constantValue = value;
+    }
+
     public void Activate()
     {
         if (debug)

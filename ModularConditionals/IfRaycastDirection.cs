@@ -8,6 +8,7 @@ public class IfRaycastDirection : MonoBehaviour, IActivatable
 {
     [SerializeField] private Transform origin;
     [SerializeField] private List<string> targetTags;
+    [SerializeField] private List<string> ignoreTags;
     [SerializeField] private Direction[] directions;
     [SerializeField] private float maxDistance;
     [SerializeField] private bool onUpdate = false;
@@ -39,49 +40,95 @@ public class IfRaycastDirection : MonoBehaviour, IActivatable
         }
     }
 
-    private bool CheckForHits()
+    public GameObject CheckForHits(bool activateActions = true, Direction[] checkDirs = null, string[] tags = null, string[] ignore = null, bool inverseTag = false)
     {
+        if(tags == null)
+        {
+            tags = targetTags.ToArray();
+        }
+        if(ignore == null)
+        {
+            ignore = ignoreTags.ToArray();
+        }
+        if(checkDirs == null)
+        {
+            checkDirs = directions;
+        }
         float smallestDistance = Mathf.Infinity;
         GameObject nearestGO = null;
 
-        foreach(Direction dir in directions)
+        foreach(Direction dir in checkDirs)
         {
-            RaycastHit[] hits = Physics.RaycastAll(origin.position, GetDirection(dir), maxDistance).OrderBy(h => h.distance).ToArray();
+            var hits = GetHits(dir);
+            if (hits == null)
+                continue;
             foreach (RaycastHit hit in hits)
             {
                 if (debug)
                 {
-                    print($"CheckForHits hit {hit.collider.name}, which has tag {hit.collider.tag}");
+                    Debug.Log($"{transform.position.y}: CheckForHits hit {hit.collider.name}, which has tag {hit.collider.tag}");
                 }
-                if (hit.collider.gameObject == origin.gameObject)
+                if (hit.collider.gameObject == origin.gameObject || ignore.Contains(hit.collider.tag))
                 {
                     continue;
                 }
-                if (targetTags.Contains(hit.collider.tag))
+                if (!tags.Contains(hit.collider.tag) && !inverseTag)
                 {
-                    float dist = Vector3.Distance(origin.position, hit.transform.position);
-                    if (dist < smallestDistance)
+                    break;
+                }
+                else if(tags.Contains(hit.collider.tag) && inverseTag)
+                {
+                    break;
+                }
+
+                float dist = Vector3.Distance(origin.position, hit.transform.position);
+                if (dist < smallestDistance)
+                {
+                    // Calculate the direction from the origin to the hit point
+                    Vector2 hitDirection = new Vector2(hit.transform.position.x, hit.transform.position.z) -
+                        new Vector2(origin.position.x, origin.position.z);
+                    // Normalize the hit direction vector
+                    hitDirection.Normalize();
+                    // Calculate the dot product between the hit direction and the raycast direction
+                    float dotProduct = Vector2.Dot(new Vector2(GetDirection(dir).x, GetDirection(dir).z), hitDirection);
+                    // Check if the hit occurred in the same direction as the raycast
+                    if (dotProduct > 0.99)
                     {
                         smallestDistance = dist;
                         nearestGO = hit.collider.gameObject;
                     }
-                }
-                else
-                {
-                    break;
                 }
             }
         }
 
         if(nearestGO != null)
         {
-            ActivateActions(nearestGO);
-            return true;
+            if(activateActions)
+            {
+                ActivateActions(nearestGO);
+            }
+
+            return nearestGO;
         }
         else
         {
-            return false;
+            return null;
         }
+    }
+
+    public RaycastHit[] GetHits(Direction dir)
+    {
+        if(origin == null)
+        {
+            return null;
+        }
+        List<RaycastHit> hits = new();
+        hits.AddRange(Physics.RaycastAll(origin.position, GetDirection(dir), maxDistance));
+        hits.AddRange(Physics.RaycastAll(origin.position + origin.right * .25f, GetDirection(dir), maxDistance));
+        hits.AddRange(Physics.RaycastAll(origin.position + origin.right * -.25f, GetDirection(dir), maxDistance));
+
+        hits = hits.OrderBy(h => h.distance).ToList();
+        return hits.ToArray();
     }
 
     private Vector3 GetDirection(Direction direction)

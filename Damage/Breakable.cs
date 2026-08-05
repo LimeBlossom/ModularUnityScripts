@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 using UnityEngine.Events;
 using UnityEngine.Audio;
 
@@ -36,7 +37,7 @@ public class Breakable : MonoBehaviour, IBreakable
             ActivateEvents();
             if (soundEffectOnBreak)
             {
-                FindObjectOfType<AudioManager>().PlayClip(soundEffectOnBreak, transform.position, 1, 1, mixer);
+                FindObjectOfType<AudioManager>()?.PlayClip(soundEffectOnBreak, transform.position, 1, 1, mixer);
             }
             //GetComponent<Collider>().enabled = false;
             if(replaceOnBreak != null)
@@ -77,5 +78,10 @@ public class Breakable : MonoBehaviour, IBreakable
     private void ActivateEvents()
     {
         events.Invoke();
+    }
+
+    public void ClearBrokenByList()
+    {
+        Array.Clear(brokenBy, 0, brokenBy.Length);
     }
 }

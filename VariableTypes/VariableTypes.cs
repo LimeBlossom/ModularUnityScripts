@@ -28,3 +28,27 @@ public class Vector3Reference
         get { return useConstant ? constantValue : variable.value; }
     }
 }
+
+public static class VariableTypes
+{
+    public static Vector3 GetDirection(Transform t, Direction direction)
+    {
+        switch(direction)
+        {
+            case Direction.Right:
+                return t.right;
+            case Direction.Left:
+                return -t.right;
+            case Direction.Up:
+                return t.up;
+            case Direction.Down:
+                return -t.up;
+            case Direction.Forward:
+                return t.forward;
+            case Direction.Backward:
+                return -t.forward;
+            default:
+                return Vector3.zero;
+        }
+    }
+}
