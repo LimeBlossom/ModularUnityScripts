@@ -27,6 +27,19 @@ public class MapStringify : MonoBehaviour
         return levelSO != null ? levelSO.value : null;
     }
 
+    // Map text can come straight from a player's clipboard, and errors are forwarded
+    // to telemetry, so a bad chunk is logged by length and hash, never verbatim.
+    private static string Describe(string text)
+    {
+        uint hash = 2166136261;
+        foreach (char c in text)
+        {
+            hash ^= c;
+            hash *= 16777619;
+        }
+        return $"{text.Length} chars, hash {hash:x8}";
+    }
+
     private void Start()
     {
         UnitTests();
@@ -104,8 +117,7 @@ public class MapStringify : MonoBehaviour
             }
             catch
             {
-                Debug.LogError("Was not able to spawn map chunk.");
-                Debug.LogError(chunk);
+                Debug.LogError("Was not able to spawn map chunk: " + Describe(chunk));
             }
         }
         loadedMap = true;
@@ -238,7 +250,9 @@ public class MapStringify : MonoBehaviour
         {
             if(mapChunk.Substring(i) != "CreativeModeBlock" && mapChunk.Substring(i) != "Falling")
             {
-                Debug.LogError("MapStringify::ReadMapChunk could not find a prefab named " + mapChunk.Substring(i));
+                string prefabName = mapChunk.Substring(i);
+                bool looksLikeName = prefabName.Length <= 64 && System.Text.RegularExpressions.Regex.IsMatch(prefabName, @"^[A-Za-z][A-Za-z0-9_ ()\-]*$");
+                Debug.LogError("MapStringify::ReadMapChunk could not find a prefab named " + (looksLikeName ? prefabName : Describe(prefabName)));
             }
         }
 
