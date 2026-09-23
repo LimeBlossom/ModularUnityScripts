@@ -28,16 +28,34 @@ public class MapStringify : MonoBehaviour
     }
 
     // Map text can come straight from a player's clipboard, and errors are forwarded
-    // to telemetry, so a bad chunk is logged by length and hash, never verbatim.
-    private static string Describe(string text)
+    // to telemetry, so a chunk is logged by its character classes, never verbatim.
+    // The p/n sign letters stay literal because they are the format's structure.
+    public static string Shape(string text)
     {
-        uint hash = 2166136261;
+        const int maxLength = 64;
+        var shape = new System.Text.StringBuilder();
         foreach (char c in text)
         {
-            hash ^= c;
-            hash *= 16777619;
+            if (shape.Length == maxLength)
+            {
+                shape.Append($"...({text.Length} chars)");
+                break;
+            }
+            if (c == 'p' || c == 'n')
+                shape.Append(c);
+            else if (char.IsDigit(c))
+                shape.Append('9');
+            else if (char.IsLetter(c))
+                shape.Append(char.IsUpper(c) ? 'A' : 'a');
+            else
+                shape.Append(c);
         }
-        return $"{text.Length} chars, hash {hash:x8}";
+        return shape.ToString();
+    }
+
+    private static bool LooksLikeMap(string text)
+    {
+        return text.Length > 0 && char.IsDigit(text[0]) && text.IndexOfAny(new[] { 'p', 'n' }, 0, System.Math.Min(text.Length, 12)) > 0;
     }
 
     private void Start()
@@ -104,10 +122,19 @@ public class MapStringify : MonoBehaviour
             }
         }
         string[] mapChunks = mapText.Split('/');
+        int chunkCount = 0;
+        int failedCount = 0;
+        string firstFailure = null;
         foreach (string chunk in mapChunks)
         {
+            if (chunk.Length == 0)
+                continue;
+            chunkCount++;
             try
             {
+                // ReadMapChunk returns null for these without saying so.
+                if (chunk.Length < 25)
+                    throw new System.FormatException("chunk shorter than 25 characters");
                 GameObject toSpawn = ReadMapChunk(chunk);
                 if(toSpawn != null)
                 {
@@ -115,10 +142,20 @@ public class MapStringify : MonoBehaviour
                     spawned.transform.SetParent(map.transform);
                 }
             }
-            catch
+            catch (System.Exception e)
             {
-                Debug.LogError("Was not able to spawn map chunk: " + Describe(chunk));
+                failedCount++;
+                if (firstFailure == null)
+                    firstFailure = $"{e.GetType().Name}, shape {Shape(chunk)}";
             }
+        }
+        // Kept free of counts so one broken format raises one alert signature.
+        if (failedCount > 0)
+        {
+            if (failedCount == chunkCount && !LooksLikeMap(mapText))
+                Debug.LogError("MapStringify: loaded text is not a map");
+            else
+                Debug.LogError($"MapStringify could not spawn map chunks ({firstFailure})");
         }
         loadedMap = true;
 }
@@ -252,7 +289,7 @@ public class MapStringify : MonoBehaviour
             {
                 string prefabName = mapChunk.Substring(i);
                 bool looksLikeName = prefabName.Length <= 64 && System.Text.RegularExpressions.Regex.IsMatch(prefabName, @"^[A-Za-z][A-Za-z0-9_ ()\-]*$");
-                Debug.LogError("MapStringify::ReadMapChunk could not find a prefab named " + (looksLikeName ? prefabName : Describe(prefabName)));
+                Debug.LogError("MapStringify::ReadMapChunk could not find a prefab named " + (looksLikeName ? prefabName : Shape(prefabName)));
             }
         }
 
