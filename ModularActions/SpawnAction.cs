@@ -33,30 +33,76 @@ public class SpawnAction : MonoBehaviour, IActivatable
 
     public void Activate()
     {
+        TryActivate();
+    }
+
+    // Returns false when nothing could be spawned. A null reference is logged as an
+    // error rather than thrown, naming which reference was null and whether it was
+    // never assigned or has been destroyed, since only player builds report errors.
+    public bool TryActivate()
+    {
         if (debug)
             print("SpawnAction activated");
-        GameObject spawned = null;
+        bool spawnedAny = false;
         if(randomizeToSpawn)
         {
-            spawned = Instantiate(toSpawn[Random.Range(0, toSpawn.Length)].value);
-            AdjustSpawned(spawned);
+            GameObject prefab = Resolve(toSpawn[Random.Range(0, toSpawn.Length)]);
+            if (prefab == null)
+                return false;
+            AdjustSpawned(Instantiate(prefab));
+            return true;
         }
-        else
+
+        foreach (GameObjectReference spawn in toSpawn)
         {
-            foreach (GameObjectReference spawn in toSpawn)
+            GameObject prefab = Resolve(spawn);
+            if (prefab == null)
+                continue;
+
+            GameObject spawned;
+            if(spawnLocation.Length > 0)
             {
-                if(spawnLocation.Length > 0)
+                Transform location = spawnLocation[Random.Range(0, spawnLocation.Length)];
+                if (location == null)
                 {
-                    spawned = Instantiate(spawn.value, spawnLocation[Random.Range(0, spawnLocation.Length)].position, spawn.value.transform.rotation);
+                    LogSkipped("spawnLocation", location);
+                    continue;
                 }
-                else
-                {
-                    spawned = Instantiate(spawn.value);
-                }
-                
-                AdjustSpawned(spawned);
+                spawned = Instantiate(prefab, location.position, prefab.transform.rotation);
             }
+            else
+            {
+                spawned = Instantiate(prefab);
+            }
+
+            AdjustSpawned(spawned);
+            spawnedAny = true;
         }
+        return spawnedAny;
+    }
+
+    private GameObject Resolve(GameObjectReference spawn)
+    {
+        if (spawn == null)
+        {
+            LogSkipped("toSpawn entry", null);
+            return null;
+        }
+        if (!spawn.useConstant && spawn.variable == null)
+        {
+            LogSkipped("toSpawn variable", spawn.variable);
+            return null;
+        }
+        GameObject prefab = spawn.value;
+        if (prefab == null)
+            LogSkipped("toSpawn value", prefab);
+        return prefab;
+    }
+
+    private void LogSkipped(string what, Object reference)
+    {
+        string state = ReferenceEquals(reference, null) ? "unassigned" : "destroyed";
+        Debug.LogError($"SpawnAction on {name} skipped: {what} {state}");
     }
 
     private void AdjustSpawned(GameObject spawned)
