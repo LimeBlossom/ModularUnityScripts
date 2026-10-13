@@ -95,7 +95,13 @@ public class SpawnAction : MonoBehaviour, IActivatable
         }
         GameObject prefab = spawn.value;
         if (prefab == null)
-            LogSkipped("toSpawn value", prefab);
+        {
+            // A variable with nothing picked yet (the creative palette before a selection) is a no-op.
+            if (!spawn.useConstant)
+                Debug.Log($"SpawnAction on {name}: {spawn.variable.name} holds no prefab, nothing to spawn");
+            else
+                LogSkipped("toSpawn value", prefab);
+        }
         return prefab;
     }
 
