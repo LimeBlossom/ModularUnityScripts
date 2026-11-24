@@ -135,10 +135,10 @@ public class MapStringify : MonoBehaviour
                 // ReadMapChunk returns null for these without saying so.
                 if (chunk.Length < 25)
                     throw new System.FormatException("chunk shorter than 25 characters");
-                GameObject toSpawn = ReadMapChunk(chunk);
+                GameObject toSpawn = ReadMapChunk(chunk, out Vector3 spawnPosition, out Quaternion spawnRotation);
                 if(toSpawn != null)
                 {
-                    GameObject spawned = Instantiate(toSpawn);
+                    GameObject spawned = Instantiate(toSpawn, spawnPosition, spawnRotation);
                     spawned.transform.SetParent(map.transform);
                 }
             }
@@ -232,8 +232,10 @@ public class MapStringify : MonoBehaviour
         return name;
     }
 
-    private GameObject ReadMapChunk(string mapChunk)
+    private GameObject ReadMapChunk(string mapChunk, out Vector3 position, out Quaternion rotation)
     {
+        position = Vector3.zero;
+        rotation = Quaternion.identity;
         if (mapChunk.Length < 25)
         {
             return null;
@@ -280,8 +282,8 @@ public class MapStringify : MonoBehaviour
         //Debug.Log(mapChunk.Substring(i));
         if(toSpawn != null)
         {
-            toSpawn.transform.position = spawnPosition;
-            toSpawn.transform.rotation = Quaternion.Euler(spawnRotation);
+            position = spawnPosition;
+            rotation = Quaternion.Euler(spawnRotation);
         }
         else
         {
